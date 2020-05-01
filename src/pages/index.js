@@ -47,7 +47,10 @@ const Home = ({ posts }) => {
           {posts.map((post) => {
             return (
               <div className="post" key={post.path}>
-                <img src={post.attributes.image}></img>
+                <img
+                  src={post.attributes.image}
+                  alt={post.attributes.description}
+                ></img>
                 <h3>{post.attributes.title}</h3>
                 <p>{post.attributes.description}</p>
                 <div className="links">
