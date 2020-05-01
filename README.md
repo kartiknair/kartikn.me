@@ -1,2 +1,3 @@
 # kartikn.me
-My personal website (currently a WIP)
+
+My personal website and blog built with Next.js and it's Static Site Generation features.

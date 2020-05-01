@@ -1,0 +1,31 @@
+{
+  "name": "kartikn.me",
+  "version": "1.0.0",
+  "description": "My personal website and blog",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kartiknair/kartikn.me.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kartiknair/kartikn.me/issues"
+  },
+  "homepage": "https://kartikn.me",
+  "dependencies": {
+    "next": "^9.3.6",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "front-matter": "^3.1.0",
+    "highlight.js": "^10.0.1",
+    "marked": "^1.0.0"
+  }
+}
