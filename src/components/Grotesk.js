@@ -59,7 +59,7 @@ const Grotesk = ({ theme, children }) => {
             box-sizing: border-box;
           }
 
-          :root {
+          html {
             font-size: 1rem;
           }
 
@@ -91,20 +91,26 @@ const Grotesk = ({ theme, children }) => {
           }
 
           @media (min-width: 1900px) {
-            :root {
+            html {
               font-size: 1.5rem;
             }
           }
 
           @media (min-width: 2600px) {
-            :root {
+            html {
               font-size: 2rem;
             }
           }
 
           @media (min-width: 3400px) {
-            :root {
+            html {
               font-size: 2.5rem;
+            }
+          }
+
+          @media (min-width: 4000px) {
+            html {
+              font-size: 3rem;
             }
           }
 
