@@ -1,6 +1,6 @@
 ---
 title: Why I'm starting a blog
-date: "1514764800000"
+date: 1514764800000
 description: My reasons for starting a blog.
 ---
 

@@ -29,9 +29,8 @@ const Home = ({ posts }) => {
           </header>
           <hr />
           <span>
-            Developer and design enthusiast striving to be better. Below are my
-            projects, I've worked on mostly open source projects that aim to
-            help and make people happy.{" "}
+            Developer and designer striving to be better. Below are the projects
+            I've worked on in the past year.{" "}
             <a
               href="/contact"
               title="Contact"

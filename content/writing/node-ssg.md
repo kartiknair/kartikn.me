@@ -12,7 +12,7 @@ I love static site generators a lot because it allows you to use whatever heavy/
 
 For this project here's the lighthouse score for the final result:
 
-![The lighthouse score for this website (Shows 99 100 100 100)](../assets/images/node-ssg-1.png)
+![The lighthouse score for this website (Shows 99 100 100 100)](./images/node-ssg-1.png)
 
 I know right! Pretty amazing. The only reason it didn't ace it was because of the heavy fonts but that's fine because they add enough aesthetic value for me to keep them.
 
@@ -81,8 +81,8 @@ We can put the decisions we made in a `config.js` file so we can access it from 
 const config = {
   dev: {
     postsdir: "./content",
-    outdir: "./public"
-  }
+    outdir: "./public",
+  },
 };
 
 module.exports = config;
@@ -103,7 +103,7 @@ const config = require("./config");
 
 const posts = fs
   .readdirSync(config.dev.postsdir)
-  .map(post => post.slice(0, -3));
+  .map((post) => post.slice(0, -3));
 
 console.log(posts);
 ```
@@ -143,7 +143,7 @@ const config = require("./config");
 const fm = require("front-matter");
 const marked = require("marked");
 
-const createPost = postPath => {
+const createPost = (postPath) => {
   const data = fs.readFileSync(`${config.dev.postsdir}/${postPath}.md`, "utf8");
   const content = fm(data);
   content.body = marked(content.body);
@@ -164,8 +164,8 @@ const createPost = require("./posts.js");
 
 const posts = fs
   .readdirSync(config.dev.postsdir)
-  .map(post => post.slice(0, -3))
-  .map(post => postMethods.createPost(post));
+  .map((post) => post.slice(0, -3))
+  .map((post) => postMethods.createPost(post));
 
 console.log(posts);
 ```
@@ -179,7 +179,7 @@ const marked = require("marked");
 
 marked.setOptions({
   renderer: new marked.Renderer(),
-  highlight: function(code, language) {
+  highlight: function (code, language) {
     const hljs = require("highlight.js");
     const validLanguage = hljs.getLanguage(language) ? language : "plaintext";
     return hljs.highlight(validLanguage, code).value;
@@ -190,7 +190,7 @@ marked.setOptions({
   sanitize: false,
   smartLists: true,
   smartypants: false,
-  xhtml: false
+  xhtml: false,
 });
 
 module.exports = marked;
@@ -209,7 +209,7 @@ if (!fs.existsSync(config.dev.outdir)) fs.mkdirSync(config.dev.outdir);
 Now in our `posts.js` file let us make a `createPosts()` function, that will create and write the HTML files to the public directory. But before that we need a helper function called `posthtml` that will take the post JSON object and return a complete HTML page that we can simply write to a file. We will use the power of template literals to make our life easier in this function here's how it looks:
 
 ```js
-const posthtml = data => `
+const posthtml = (data) => `
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -238,15 +238,15 @@ The reason I create a `new Date()` when adding the date to the post is so that a
 Now we can create a function called `createPosts()` that'll take the output of the `createPost()` function and generate an HTML file. Here's how it looks:
 
 ```js
-const createPosts = posts => {
-  posts.forEach(post => {
+const createPosts = (posts) => {
+  posts.forEach((post) => {
     if (!fs.existsSync(`${config.dev.outdir}/${post.path}`))
       fs.mkdirSync(`${config.dev.outdir}/${post.path}`);
 
     fs.writeFile(
       `${config.dev.outdir}/${post.path}/index.html`,
       posthtml(post),
-      e => {
+      (e) => {
         if (e) throw e;
         console.log(`${post.path}/index.html was created successfully`);
       }
@@ -256,7 +256,7 @@ const createPosts = posts => {
 
 module.exports = {
   createPost: createPost,
-  createPosts: createPosts
+  createPosts: createPosts,
 };
 ```
 
@@ -271,8 +271,8 @@ const config = require("./config");
 
 const posts = fs
   .readdirSync(config.dev.postsdir)
-  .map(post => post.slice(0, -3))
-  .map(post => postMethods.createPost(post));
+  .map((post) => post.slice(0, -3))
+  .map((post) => postMethods.createPost(post));
 
 if (!fs.existsSync(config.dev.outdir)) fs.mkdirSync(config.dev.outdir);
 
@@ -296,8 +296,8 @@ const config = {
 
   dev: {
     postsdir: "./content",
-    outdir: "./public"
-  }
+    outdir: "./public",
+  },
 };
 
 module.exports = config;
@@ -308,7 +308,7 @@ module.exports = config;
 The homepage will be the `index.html` file in the public directory. It should have a header with the blog's name and a small about section for the author. We can use template literals like we did before to generate the HTML for that. Let's call the function `homepage()` and put it in a file called `homepage.js` . Here's how that file looks now:
 
 ```js
-const homepage = posts => `
+const homepage = (posts) => `
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -333,7 +333,7 @@ const homepage = posts => `
             <div class="posts">
                 ${posts
                   .map(
-                    post => `<div class="post">
+                    (post) => `<div class="post">
                     <h3><a href="./${post.path}">${
                       post.attributes.title
                     }</a></h3>
@@ -360,8 +360,8 @@ const homepage = posts => `
 Now we need to actually create the file so we can add this HTML to it. We can make that a function called `addHomepage()` and also add that to the same file. Here's how it looks:
 
 ```js
-const addHomePage = posts => {
-  fs.writeFile(`${config.dev.outdir}/index.html`, homepage(posts), e => {
+const addHomePage = (posts) => {
+  fs.writeFile(`${config.dev.outdir}/index.html`, homepage(posts), (e) => {
     if (e) throw e;
     console.log(`index.html was created successfully`);
   });
@@ -378,9 +378,9 @@ const addHomePage = require("./homepage");
 
 const posts = fs
   .readdirSync(config.dev.postsdir)
-  .map(post => post.slice(0, -3))
-  .map(post => postMethods.createPost(post))
-  .sort(function(a, b) {
+  .map((post) => post.slice(0, -3))
+  .map((post) => postMethods.createPost(post))
+  .sort(function (a, b) {
     return b.attributes.date - a.attributes.date;
   });
 

@@ -29,7 +29,7 @@ const Home = ({ posts }) => {
           </header>
           <hr />
           <span>
-            Developer and design enthusiast striving to be better. Below are my
+            Developer and designer striving to be better. Below are my
             blog posts, I talk about my journey learning and building things.{" "}
             <a
               href="/contact"
