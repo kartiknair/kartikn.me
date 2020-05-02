@@ -11,8 +11,8 @@ const About = () => {
         <a href="/">Go back home</a>
         <h1>About Me</h1>
         <p>
-          Hey there! I'm a software engineer and design enthusiast based in
-          Dubai. Currently I'm finishing my Bachelor's in Computer Systems while
+          Hey there! I'm a software engineer and designer based in Dubai.
+          Currently I'm finishing my Bachelor's in Computer Systems while
           building other side projects.
         </p>
         <p>
@@ -22,9 +22,9 @@ const About = () => {
         </p>
         <p>
           This summer I'm looking to work on more side projects (I have
-          something very exciting coming up soon) and also get an internship so
-          I can learn from people that are much more skilled than me. If you
-          want to work with me on something or just wanna chat head over to the{" "}
+          something very exciting coming up soon) and also get a job so I can
+          learn from people that are much more skilled than me. If you want to
+          work with me on something or just wanna chat head over to the{" "}
           <a href="/contact">contact page</a>.
         </p>
       </main>

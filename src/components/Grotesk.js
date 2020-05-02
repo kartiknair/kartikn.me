@@ -254,6 +254,20 @@ const Grotesk = ({ theme, children }) => {
             color: ${theme.bg};
             background: ${theme.darkFg};
           }
+
+          .dim {
+            opacity: 1;
+            transition: opacity 0.15s ease-in;
+          }
+          .dim:hover,
+          .dim:focus {
+            opacity: 0.5;
+            transition: opacity 0.15s ease-in;
+          }
+          .dim:active {
+            opacity: 0.8;
+            transition: opacity 0.15s ease-out;
+          }
         `}
       </style>
     </div>
