@@ -50,7 +50,7 @@ const Home = ({ posts }) => {
           .post {
             width: 100%;
             text-decoration: none;
-            margin: 2rem 0 3rem 0;
+            margin: 2rem 0 3.5rem 0;
           }
         `}
       </style>
