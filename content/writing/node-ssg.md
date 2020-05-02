@@ -476,7 +476,9 @@ $line-ht-mono: 1;
 
 As you can see I've imported two fonts for this blog. Lyon Display which is locally hosted & EB Garamond which is a Google Font.
 
-That's it for the styling. It ended up looking way better than I expected & you can see the final result right here. Since your reading this on my blog!
+That's it for the styling. It ended up looking way better than I expected & you can see the final result here:
+
+![Final result of styling](./images/node-ssg-2.png)
 
 ### Hosting
 
