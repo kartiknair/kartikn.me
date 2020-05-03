@@ -1,44 +1,61 @@
-const Header = ({ bio }) => {
+import Link from "next/link";
+
+const Header = ({ bio, writing }) => {
   return (
     <>
       <div className="header">
         <header>
-          <a className="dim" href="/" title="Home">
-            <h2>Kartik Nair</h2>
-          </a>
+          <Link href="/">
+            <a className="dim" title="Home">
+              <h2>Kartik Nair</h2>
+            </a>
+          </Link>
+
           <nav>
-            <a className="dim mr1" href="/about" title="About">
-              About
-            </a>
-            <a className="dim mr1" href="/writing" title="Writing">
-              Writing
-            </a>
-            <a className="dim" href="/contact" title="Contact">
-              Contact
-            </a>
+            <Link href="/about">
+              <a className="dim mr1" title="About">
+                About
+              </a>
+            </Link>
+
+            {writing ? (
+              <Link href="/writing">
+                <a className="dim mr1" title="Writing">
+                  Writing
+                </a>
+              </Link>
+            ) : (
+              <Link href="/">
+                <a className="dim mr1" title="Work">
+                  Work
+                </a>
+              </Link>
+            )}
+
+            <Link href="/contact">
+              <a className="dim" title="Contact">
+                Contact
+              </a>
+            </Link>
           </nav>
         </header>
         <hr />
         <span>
           {bio}.{" "}
-          <a
-            href="/contact"
-            title="Contact"
-            style={{ textDecoration: "underline" }}
-            className="dim"
-          >
-            Wanna get in touch?
-          </a>
+          <Link href="/contact">
+            <a
+              title="Contact"
+              style={{ textDecoration: "underline" }}
+              className="dim"
+            >
+              Wanna get in touch?
+            </a>
+          </Link>
         </span>
       </div>
 
       <style jsx>
         {`
-          .links a {
-            color: inherit;
-            text-decoration: underline;
-          }
-
           .header a {
             color: inherit;
             text-decoration: none;

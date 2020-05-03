@@ -1,10 +1,12 @@
 import HomeLayout from "../components/HomeLayout";
+import Link from "next/link";
 
 const Home = ({ posts }) => {
   return (
     <HomeLayout
       title="Kartik Nair"
       bio="Developer and designer striving to be better. Below are the projects I've worked on in the past year"
+      writing={true}
     >
       <div className="posts">
         {posts.map((post) => {
@@ -17,13 +19,11 @@ const Home = ({ posts }) => {
               <h3>{post.attributes.title}</h3>
               <p>{post.attributes.description}</p>
               <div className="links">
-                <a
-                  href={`/work/${post.path}`}
-                  title="Learn more"
-                  className="dim mr1"
-                >
-                  Learn more
-                </a>
+                <Link href="/work/[project]" as={`/work/${post.path}`}>
+                  <a title="Learn more" className="dim mr1">
+                    Learn more
+                  </a>
+                </Link>
                 <a href={post.attributes.link} title="See live" className="dim">
                   See in action
                 </a>

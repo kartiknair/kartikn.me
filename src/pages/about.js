@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 
 const About = () => {
   return (
@@ -8,7 +9,9 @@ const About = () => {
         <meta name="description" content="Abput me" />
       </Head>
       <main>
-        <a href="/">Go back home</a>
+        <Link href="/">
+          <a>Go back home</a>
+        </Link>
         <h1>About Me</h1>
         <p>
           Hey there! I'm a software engineer and designer based in Dubai.
@@ -25,7 +28,10 @@ const About = () => {
           something very exciting coming up soon) and also get a job so I can
           learn from people that are much more skilled than me. If you want to
           work with me on something or just wanna chat head over to the{" "}
-          <a href="/contact">contact page</a>.
+          <Link href="/contact">
+            <a>contact page</a>
+          </Link>
+          .
         </p>
       </main>
     </>

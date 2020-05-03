@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Header from "./Header";
 
-const HomeLayout = ({ bio, title, children }) => {
+const HomeLayout = ({ bio, title, children, writing }) => {
   return (
     <>
       <Head>
@@ -11,7 +11,7 @@ const HomeLayout = ({ bio, title, children }) => {
       </Head>
 
       <main>
-        <Header bio={bio} />
+        <Header bio={bio} writing={writing} />
         {children}
       </main>
     </>

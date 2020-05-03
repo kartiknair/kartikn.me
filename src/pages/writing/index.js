@@ -1,19 +1,23 @@
 import HomeLayout from "../../components/HomeLayout";
+import Link from "next/link";
 
 const Home = ({ posts }) => {
   return (
     <HomeLayout
       title="Kartik Nair - Blog"
       bio="Developer and designer striving to be better. Below are my blog posts, I talk about my journey learning and building things"
+      writing={false}
     >
       <div className="posts">
         {posts.map((post) => {
           return (
             <div className="post dim" key={post.path}>
-              <a href={`writing/${post.path}`} title={post.attributes.title}>
-                <h3>{post.attributes.title}</h3>
-                <p>{post.attributes.description}</p>
-              </a>
+              <Link href="writing/[slug]" as={`writing/${post.path}`}>
+                <a title={post.attributes.title}>
+                  <h3>{post.attributes.title}</h3>
+                  <p>{post.attributes.description}</p>
+                </a>
+              </Link>
             </div>
           );
         })}

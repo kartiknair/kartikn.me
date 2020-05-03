@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 
 const Contact = () => {
   return (
@@ -8,7 +9,9 @@ const Contact = () => {
         <meta name="description" content="Get in touch with us" />
       </Head>
       <main className="post-page">
-        <a href="/">Go back home</a>
+        <Link href="/">
+          <a>Go back home</a>
+        </Link>
         <h1>Get In Touch</h1>
         <p>
           The easiest way to get in touch would be through my email:{" "}

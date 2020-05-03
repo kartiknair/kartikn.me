@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React from "react";
+import Link from "next/link";
 
 const Post = ({ post }) => (
   <>
@@ -7,10 +8,20 @@ const Post = ({ post }) => (
       <title>{post.attributes.title} - Kartik Nair</title>
       <meta name="description" content={post.attributes.description} />
     </Head>
-    <main
-      className="post-page"
-      dangerouslySetInnerHTML={{ __html: post.body }}
-    ></main>
+    <main className="post-page">
+      <Link href="/">
+        <a>Go back home</a>
+      </Link>
+      <h1>{post.attributes.title}</h1>
+      <img
+        src={`.${post.attributes.image}`}
+        alt={post.attributes.description}
+      />
+      <div
+        className="post-body"
+        dangerouslySetInnerHTML={{ __html: post.body }}
+      ></div>
+    </main>
   </>
 );
 
@@ -30,11 +41,6 @@ export async function getStaticProps({ params }) {
   const data = fs.readFileSync(`content/work/${params.project}.md`, "utf8");
   const post = fm(data);
   post.body = marked(post.body);
-  post.body =
-    `<a href="/">Go back home</a>
-    <h1>${post.attributes.title}</h1>
-    <img src=".${post.attributes.image}" alt="${post.attributes.description}" style="width: 100%"/>` +
-    post.body;
 
   return { props: { post } };
 }
