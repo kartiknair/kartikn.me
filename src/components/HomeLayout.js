@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Header from "./Header";
+import { motion } from "framer-motion";
 
 const HomeLayout = ({ bio, title, children, writing }) => {
   return (
@@ -11,8 +12,17 @@ const HomeLayout = ({ bio, title, children, writing }) => {
       </Head>
 
       <main>
-        <Header bio={bio} writing={writing} />
-        {children}
+        <motion.div initial="exit" animate="enter" exit="exit">
+          <Header bio={bio} writing={writing} />
+        </motion.div>
+        <motion.div
+          initial="initial"
+          animate="enter"
+          exit="exit"
+          variants={{ exit: { transition: { staggerChildren: 0.1 } } }}
+        >
+          {children}
+        </motion.div>
       </main>
     </>
   );

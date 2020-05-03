@@ -1,6 +1,24 @@
 import HomeLayout from "../components/HomeLayout";
 import Link from "next/link";
 
+import { motion } from "framer-motion";
+
+const postVariants = {
+  initial: { scale: 0.96, y: 30, opacity: 0 },
+  enter: {
+    scale: 1,
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.5, ease: [0.48, 0.15, 0.25, 0.96] },
+  },
+  exit: {
+    scale: 0.6,
+    y: 100,
+    opacity: 0,
+    transition: { duration: 0.2, ease: [0.48, 0.15, 0.25, 0.96] },
+  },
+};
+
 const Home = ({ posts }) => {
   return (
     <HomeLayout
@@ -12,22 +30,32 @@ const Home = ({ posts }) => {
         {posts.map((post) => {
           return (
             <div className="post" key={post.path}>
-              <img
-                src={post.attributes.image}
-                alt={post.attributes.description}
-              ></img>
-              <h3>{post.attributes.title}</h3>
-              <p>{post.attributes.description}</p>
-              <div className="links">
-                <Link href="/work/[project]" as={`/work/${post.path}`}>
-                  <a title="Learn more" className="dim mr1">
-                    Learn more
+              <motion.div variants={postVariants}>
+                <img
+                  src={post.attributes.image}
+                  alt={post.attributes.description}
+                ></img>
+                <h3>{post.attributes.title}</h3>
+                <p>{post.attributes.description}</p>
+                <div className="links">
+                  <Link
+                    scroll={false}
+                    href="/work/[project]"
+                    as={`/work/${post.path}`}
+                  >
+                    <a title="Learn more" className="dim mr1">
+                      Learn more
+                    </a>
+                  </Link>
+                  <a
+                    href={post.attributes.link}
+                    title="See live"
+                    className="dim"
+                  >
+                    See in action
                   </a>
-                </Link>
-                <a href={post.attributes.link} title="See live" className="dim">
-                  See in action
-                </a>
-              </div>
+                </div>
+              </motion.div>
             </div>
           );
         })}
