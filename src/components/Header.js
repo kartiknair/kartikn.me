@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 let easing = [0.175, 0.85, 0.42, 0.96];
 
 const textVariants = {
-  exit: { x: 100, opacity: 0, transition: { duration: 0.5, ease: easing } },
+  exit: { y: -100, opacity: 0, transition: { duration: 0.5, ease: easing } },
   enter: {
-    x: 0,
+    y: 0,
     opacity: 1,
     transition: { delay: 0.1, duration: 0.5, ease: easing },
   },
