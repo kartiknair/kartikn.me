@@ -4,16 +4,17 @@ hide_body: false
 fields:
 - type: text
   name: title
-  label: title
+  label: Page Title
 - type: textarea
   name: description
-  label: description
+  label: Description
 - type: number
   name: date
-  label: date
+  label: Date
 - type: file
   name: image
-  label: image
+  label: Image
 - type: text
   name: link
-  label: link
+  label: Link
+  description: The external link to showcase your work
