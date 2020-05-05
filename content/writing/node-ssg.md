@@ -12,7 +12,7 @@ I love static site generators a lot because it allows you to use whatever heavy/
 
 For this project here's the lighthouse score for the final result:
 
-![The lighthouse score for this website (Shows 99 100 100 100 as the scores)](../images/node-ssg-1.png)
+![The lighthouse score for this website (Shows 99 100 100 100)](../images/node-ssg-1.png)
 
 I know right! Pretty amazing. The only reason it didn't ace it was because of the heavy fonts but that's fine because they add enough aesthetic value for me to keep them.
 
