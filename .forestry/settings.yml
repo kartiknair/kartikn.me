@@ -6,8 +6,8 @@ webhook_url:
 sections:
 - type: directory
   path: content/work
-  label: Projects
-  create: all
+  label: Portfolio
+  create: documents
   match: "**/*"
   templates:
   - portfolio-piece
