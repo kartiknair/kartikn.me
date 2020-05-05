@@ -4,10 +4,10 @@ hide_body: false
 fields:
 - type: text
   name: title
-  label: title
+  label: Title
 - type: number
   name: date
-  label: date
+  label: Date
 - type: textarea
   name: description
-  label: description
+  label: Description
