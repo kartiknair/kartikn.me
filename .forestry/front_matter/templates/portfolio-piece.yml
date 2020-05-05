@@ -1,0 +1,19 @@
+---
+label: Portfolio Piece
+hide_body: false
+fields:
+- type: text
+  name: title
+  label: title
+- type: textarea
+  name: description
+  label: description
+- type: number
+  name: date
+  label: date
+- type: file
+  name: image
+  label: image
+- type: text
+  name: link
+  label: link
