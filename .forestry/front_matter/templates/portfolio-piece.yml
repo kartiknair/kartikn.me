@@ -1,0 +1,20 @@
+---
+label: Portfolio Piece
+hide_body: false
+fields:
+- type: text
+  name: title
+  label: Page Title
+- type: textarea
+  name: description
+  label: Description
+- type: number
+  name: date
+  label: Date
+- type: file
+  name: image
+  label: Image
+- type: text
+  name: link
+  label: Link
+  description: The external link to showcase your work

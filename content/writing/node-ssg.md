@@ -84,7 +84,6 @@ const config = {
     outdir: "./public",
   },
 };
-
 module.exports = config;
 ```
 
@@ -100,11 +99,9 @@ Now we can use the methods that `fs` provides in this syntax: `fs.methodName()`.
 
 ```js
 const config = require("./config");
-
 const posts = fs
   .readdirSync(config.dev.postsdir)
   .map((post) => post.slice(0, -3));
-
 console.log(posts);
 ```
 
@@ -142,7 +139,6 @@ Here's how that would look like:
 const config = require("./config");
 const fm = require("front-matter");
 const marked = require("marked");
-
 const createPost = (postPath) => {
   const data = fs.readFileSync(`${config.dev.postsdir}/${postPath}.md`, "utf8");
   const content = fm(data);
@@ -150,7 +146,6 @@ const createPost = (postPath) => {
   content.path = postPath;
   return content;
 };
-
 module.exports = createPost;
 ```
 
@@ -161,12 +156,10 @@ Now let's use this method in `index.js` and just log the output:
 ```js
 const config = require("./config");
 const createPost = require("./posts.js");
-
 const posts = fs
   .readdirSync(config.dev.postsdir)
   .map((post) => post.slice(0, -3))
   .map((post) => postMethods.createPost(post));
-
 console.log(posts);
 ```
 
@@ -176,7 +169,6 @@ Since we would like to use highlight.js to highlight our code. We can do that us
 
 ```js
 const marked = require("marked");
-
 marked.setOptions({
   renderer: new marked.Renderer(),
   highlight: function (code, language) {
@@ -192,7 +184,6 @@ marked.setOptions({
   smartypants: false,
   xhtml: false,
 });
-
 module.exports = marked;
 ```
 
@@ -242,7 +233,6 @@ const createPosts = (posts) => {
   posts.forEach((post) => {
     if (!fs.existsSync(`${config.dev.outdir}/${post.path}`))
       fs.mkdirSync(`${config.dev.outdir}/${post.path}`);
-
     fs.writeFile(
       `${config.dev.outdir}/${post.path}/index.html`,
       posthtml(post),
@@ -253,7 +243,6 @@ const createPosts = (posts) => {
     );
   });
 };
-
 module.exports = {
   createPost: createPost,
   createPosts: createPosts,
@@ -268,14 +257,11 @@ Now let's call it in `index.js` and see if it worked:
 const fs = require("fs");
 const postMethods = require("./posts");
 const config = require("./config");
-
 const posts = fs
   .readdirSync(config.dev.postsdir)
   .map((post) => post.slice(0, -3))
   .map((post) => postMethods.createPost(post));
-
 if (!fs.existsSync(config.dev.outdir)) fs.mkdirSync(config.dev.outdir);
-
 postMethods.createPosts(posts);
 ```
 
@@ -293,13 +279,11 @@ const config = {
   authorDescription:
     "a web developer and designer making lot's of stuff in Dubai",
   authorTwitter: "https://twitter.com/kartiknair",
-
   dev: {
     postsdir: "./content",
     outdir: "./public",
   },
 };
-
 module.exports = config;
 ```
 
@@ -329,7 +313,6 @@ const homepage = (posts) => `
 }">follow him on twtter</a></p>
                 <hr />
             </header>
-
             <div class="posts">
                 ${posts
                   .map(
@@ -345,7 +328,6 @@ const homepage = (posts) => `
                   )
                   .join("")}
             </div>
-
             <footer>
                 ${`<p>© ${new Date().getFullYear()} ${
                   config.authorName
@@ -375,7 +357,6 @@ const fs = require("fs");
 const postMethods = require("./posts");
 const config = require("./config");
 const addHomePage = require("./homepage");
-
 const posts = fs
   .readdirSync(config.dev.postsdir)
   .map((post) => post.slice(0, -3))
@@ -383,9 +364,7 @@ const posts = fs
   .sort(function (a, b) {
     return b.attributes.date - a.attributes.date;
   });
-
 if (!fs.existsSync(config.dev.outdir)) fs.mkdirSync(config.dev.outdir);
-
 postMethods.createPosts(posts);
 addHomePage(posts);
 ```
@@ -415,19 +394,16 @@ Ah! Now my favourite part, it's time to make it look nice. I don't know about yo
 :root {
   font-size: calc(0.75rem + 0.5vw);
 }
-
 .grotesk {
   width: 60%;
   margin: 5% 20% 0 20%;
 }
-
 @media (max-width: 500px) {
   .grotesk {
     width: 80%;
     margin: 8% 10% 0 10%;
   }
 }
-
 img {
   max-width: 100%;
 }
@@ -439,17 +415,12 @@ As you can see I've decided to go with fluid type for this project. I also broug
 $bg: #1e3b5a;
 $fg-body: #99b7c3;
 $fg-headings: #c1d6df;
-
 $hr-color: rgba(153, 183, 195, 0.2);
-
 $a-color: #d8e9f0;
-
 $pre-bg: rgba(153, 183, 195, 0.07);
 $pre-color: $fg-body;
-
 $inline-code-bg: rgba(153, 183, 195, 0.07);
 $inline-code-color: #c1d6df;
-
 $quote-bg: $bg;
 $quote-border: #8a4baf;
 $quote-color: #6a727c;
@@ -463,9 +434,7 @@ I also customized the `fonts.scss` file that came with grotesk. Here's how it lo
   src: url("../fonts/LyonDisplay-Bold.otf");
   font-weight: 800;
 }
-
 @import url("https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&display=swap");
-
 $font-fam-main: "EB Garamond", serif;
 $font-fam-headings: lyon, serif;
 $font-fam-mono: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
