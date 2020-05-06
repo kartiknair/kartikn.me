@@ -2,7 +2,7 @@ import HomeLayout from "../components/HomeLayout";
 import Link from "next/link";
 
 import { motion } from "framer-motion";
-import { postVariants } from "../animationVariants";
+import { postVariants } from "src/shared/animationVariants";
 
 const Home = ({ posts }) => {
   return (

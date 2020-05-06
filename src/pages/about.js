@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 
 import { motion } from "framer-motion";
-import { textVariants } from "../animationVariants";
+import { textVariants } from "src/shared/animationVariants";
 
 const About = () => {
   return (

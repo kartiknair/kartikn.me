@@ -1,8 +1,8 @@
-import HomeLayout from "../../components/HomeLayout";
+import HomeLayout from "src/components/HomeLayout";
 import Link from "next/link";
 
 import { motion } from "framer-motion";
-import { postVariants } from "../../animationVariants";
+import { postVariants } from "src/shared/animationVariants";
 
 const Home = ({ posts }) => {
   return (
@@ -14,8 +14,8 @@ const Home = ({ posts }) => {
       <div className="posts">
         {posts.map((post) => {
           return (
-            <motion.div variants={postVariants}>
-              <div className="post dim" key={post.path}>
+            <motion.div variants={postVariants} key={post.path}>
+              <div className="post dim">
                 <Link href="writing/[slug]" as={`writing/${post.path}`}>
                   <a title={post.attributes.title}>
                     <h3>{post.attributes.title}</h3>

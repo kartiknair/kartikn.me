@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 import { motion } from "framer-motion";
-import { textVariants } from "../../animationVariants";
+import { textVariants } from "src/shared/animationVariants";
 
 const Post = ({ post }) => {
   useEffect(() => {
@@ -52,7 +52,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const fs = require("fs");
   const fm = require("front-matter");
-  const marked = require("../../marked");
+  const marked = require("src/shared/marked");
 
   const data = fs.readFileSync(`content/work/${params.project}.md`, "utf8");
   const post = fm(data);

@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 
 import { motion } from "framer-motion";
-import { textVariants } from "../../animationVariants";
+import { textVariants } from "src/shared/animationVariants";
 
 const Post = ({ post }) => (
   <>
@@ -39,7 +39,7 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   const fs = require("fs");
   const fm = require("front-matter");
-  const marked = require("../../marked");
+  const marked = require("src/shared/marked");
 
   const data = fs.readFileSync(`content/writing/${params.slug}.md`, "utf8");
   const post = fm(data);

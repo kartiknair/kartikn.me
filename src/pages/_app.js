@@ -1,8 +1,9 @@
 import React from "react";
 import App from "next/app";
 import { AnimatePresence } from "framer-motion";
+import "public/hljs.css";
 
-import Grotesk from "../components/Grotesk";
+import Grotesk from "src/components/Grotesk";
 
 class MyApp extends App {
   render() {
