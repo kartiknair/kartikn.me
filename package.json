@@ -4,6 +4,7 @@
   "description": "My personal website and blog",
   "scripts": {
     "dev": "next dev",
+    "forestry:preview": "next -p 8080 -H 0.0.0.0",
     "build": "next build",
     "start": "next start"
   },
