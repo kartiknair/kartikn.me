@@ -37,7 +37,10 @@ const Post = ({ post }) => (
         property="twitter:description"
         content={post.attributes.description}
       />
-      <meta property="twitter:image" content={`/images/${post.slug}.png`} />
+      <meta
+        property="twitter:image"
+        content={`https://kartikn.me/images/${post.slug}.png`}
+      />
     </Head>
     <motion.div initial="exit" animate="enter" exit="exit">
       <main className="post-page">
