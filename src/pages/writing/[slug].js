@@ -9,7 +9,35 @@ const Post = ({ post }) => (
   <>
     <Head>
       <title>{post.attributes.title} - Kartik Nair</title>
+      <meta name="title" content={`${post.attributes.title} - Kartik Nair`} />
       <meta name="description" content={post.attributes.description} />
+
+      <meta property="og:type" content="article" />
+      <meta
+        property="og:url"
+        content={`https://kartikn.me/writing/${post.slug}`}
+      />
+      <meta
+        property="og:title"
+        content={`${post.attributes.title} - Kartik Nair`}
+      />
+      <meta property="og:description" content={post.attributes.description} />
+      <meta property="og:image" content={`/images/${post.slug}.png`} />
+
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta
+        property="twitter:url"
+        content={`https://kartikn.me/writing/${post.slug}`}
+      />
+      <meta
+        property="twitter:title"
+        content={`${post.attributes.title} - Kartik Nair`}
+      />
+      <meta
+        property="twitter:description"
+        content={post.attributes.description}
+      />
+      <meta property="twitter:image" content={`/images/${post.slug}.png`} />
     </Head>
     <motion.div initial="exit" animate="enter" exit="exit">
       <main className="post-page">
@@ -44,6 +72,7 @@ export async function getStaticProps({ params }) {
   const data = fs.readFileSync(`content/writing/${params.slug}.md`, "utf8");
   const post = fm(data);
   post.body = marked(post.body);
+  post.slug = params.slug;
 
   return { props: { post } };
 }
