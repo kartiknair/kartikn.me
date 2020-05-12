@@ -24,34 +24,6 @@ const Grotesk = ({ theme, children }) => {
       {children}
       <style jsx global>
         {`
-          @font-face {
-            font-family: noah;
-            font-weight: 400;
-            src: url(/fonts/Noah-Regular.woff);
-            font-style: regular;
-          }
-
-          @font-face {
-            font-family: noah;
-            font-weight: 700;
-            src: url(/fonts/Noah-Bold.woff);
-            font-style: regular;
-          }
-
-          @font-face {
-            font-family: noah;
-            font-weight: 400;
-            src: url(/fonts/Noah-RegularItalic.woff);
-            font-style: italic;
-          }
-
-          @font-face {
-            font-family: noah;
-            font-weight: 700;
-            src: url(/fonts/Noah-BoldItalic.woff);
-            font-style: italic;
-          }
-
           * {
             margin: 0;
             padding: 0;
@@ -78,7 +50,7 @@ const Grotesk = ({ theme, children }) => {
           }
 
           main {
-            font-family: noah, sans-serif;
+            font-family: "Jost", sans-serif;
             width: 45%;
             margin: 5% 27.5%;
           }
@@ -180,7 +152,18 @@ const Grotesk = ({ theme, children }) => {
           .grotesk blockquote,
           .grotesk q,
           .grotesk hr {
-            margin: 1rem 0;
+            margin: 0.8rem 0;
+          }
+
+          .grotesk h1,
+          .grotesk h2,
+          .grotesk h3,
+          .grotesk h4,
+          .grotesk h5,
+          .grotesk h6,
+          strong,
+          b {
+            font-weight: 500;
           }
 
           .grotesk hr {
