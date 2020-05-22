@@ -2,13 +2,16 @@ import "public/styles/base.css";
 import "public/styles/hljs.css";
 import Nav from "src/components/Nav";
 import { PageTransition } from "next-page-transitions";
+import { useRouter } from "next/router";
 
 function MyApp({ Component, pageProps }) {
+  const { route } = useRouter();
+
   return (
     <main>
       <Nav />
       <PageTransition timeout={300} classNames="transition">
-        <Component {...pageProps} />
+        <Component {...pageProps} key={route} />
       </PageTransition>
       <style jsx global>{`
         .transition-enter {
