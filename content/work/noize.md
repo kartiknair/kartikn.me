@@ -1,8 +1,8 @@
 ---
 title: Noize.ml
 description: A web app that I built last summer. It helps people relax by letting them choose from a range of relaxing music/sounds and watch animated GIFs while listening. It’s open source and built with react.
-date: 1583777940722
-image: ./images/noize.png
+date: 1589993500004
+image: noize_dnpdge.png
 link: https://noize.ml
 ---
 

@@ -1,8 +1,8 @@
 ---
 title: Grotesk.css
 description: Grotesk is a CSS library and react component that aims to make web typography a bit more simple. It uses Scss and once minified comes in at a a tiny size of only 2kb.
-date: 1583777940721
-image: ./images/grotesk.png
+date: 1589993500003
+image: grotesk_ayfszl.png
 link: https://grotesk.now.sh
 ---
 

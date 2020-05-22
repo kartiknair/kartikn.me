@@ -1,73 +1,47 @@
-import HomeLayout from "src/components/HomeLayout";
+import SEO from "src/components/SEO";
+import { getMarkdownFiles } from "src/lib/utils";
 import Link from "next/link";
+import useCloudinary from "src/lib/useCloudinary";
 
-import { motion } from "framer-motion";
-import { postVariants } from "src/shared/animationVariants";
+const Writing = ({ posts }) => {
+  useCloudinary(process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME);
 
-const Home = ({ posts }) => {
   return (
-    <HomeLayout
-      title="Kartik Nair - Blog"
-      bio="Developer and designer striving to be better. Below are my blog posts, I talk about my journey learning and building things"
-      writing={false}
-    >
-      <div className="posts">
-        {posts.map((post) => {
-          return (
-            <motion.div variants={postVariants} key={post.path}>
-              <div className="post dim">
-                <Link href="writing/[slug]" as={`writing/${post.path}`}>
-                  <a title={post.attributes.title}>
-                    <h3>{post.attributes.title}</h3>
-                    <p>{post.attributes.description}</p>
-                  </a>
-                </Link>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
+    <div>
+      <SEO
+        title="Kartik Nair's Blog"
+        description="My writing, here I write about my experiences while learning web development & design."
+        url={`${process.env.NEXT_PUBLLIC_HOME_URL}/writing`}
+      />
 
+      {posts.map((post) => (
+        <Link href="writing/[slug]" as={`writing/${post.slug}`} key={post.slug}>
+          <a className="dim post">
+            <h4>{post.data.title}</h4>
+            <p>{post.data.description}</p>
+          </a>
+        </Link>
+      ))}
       <style jsx>
         {`
-          .post {
-            width: 100%;
-            margin: 2rem 0;
+          a {
+            text-decoration: none;
+            color: inherit;
+            background-image: none;
           }
 
-          .post a {
-            color: inherit;
-            text-decoration: none;
+          .post {
+            display: block;
+            margin-bottom: 2.5rem;
           }
         `}
       </style>
-    </HomeLayout>
+    </div>
   );
 };
 
 export async function getStaticProps() {
-  const fs = require("fs");
-  const fm = require("front-matter");
-
-  const posts = fs.readdirSync("content/writing");
-  let newPosts = [];
-
-  posts.forEach((post) => {
-    const data = fs.readFileSync(`content/writing/${post}`, "utf8");
-    let newPost = fm(data);
-    newPost.path = post.slice(0, -3);
-    newPosts.push(newPost);
-  });
-
-  newPosts.sort((a, b) => {
-    return b.attributes.date - a.attributes.date;
-  });
-
-  return {
-    props: {
-      posts: newPosts,
-    },
-  };
+  return { props: { posts: getMarkdownFiles("content/writing") } };
 }
 
-export default Home;
+export default Writing;

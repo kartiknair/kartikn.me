@@ -26,7 +26,7 @@ As you can see the hook takes 2 arguments the first one is a string key that's s
 
 So now that we know the basics of SWR let's build an application with it. If you wanna skip ahead to a specific part check the Table of Contents below or if you wanna see the finished project then you can check it out live at [https://typemd.now.sh](https://typemd.now.sh "https://typemd.now.sh") or see the source code at [https://github.com/kartiknair/typemd](https://github.com/kartiknair/typemd "https://github.com/kartiknair/typemd").
 
-![Preview of end result](/images/typemd-result.png)
+![Preview of end result](typemd-result_ghunpe.png)
 
 1.  [Prerequisites](#prerequisites)
 2.  [Setup](#setup)
@@ -75,23 +75,23 @@ I also uninstalled the testing libraries and testing specific code as those are 
 
 To be able to use Firebase in our web app we actually need to set up a Firebase project so let's do that. Head over to [https://firebase.google.com](https://firebase.google.com "https://firebase.google.com") and log in to your Google account. Then in the console create a new project:
 
-![Step 1 of configuring firebase](/images/firebase-1.png)
+![Step 1 of configuring firebase](firebase-1_kcp95k.png)
 
 I'm going to choose not to have analytics on but you can do so if you wish.
 
-![Step 2 of configuring firebase](/images/firebase-2.png)
+![Step 2 of configuring firebase](firebase-2_txfjmh.png)
 
 Now that we have our project created in the project click the little web icon:
 
-![Step 3 of configuring firebase](/images/firebase-3.png)
+![Step 3 of configuring firebase](firebase-3_or6ek7.png)
 
 And copy this configuration object it gives you and keep it wherever you like (don't worry too much about it you can come back and view it later in the dashboard):
 
-![Step 4 of configuring firebase](/images/firebase-4.png)
+![Step 4 of configuring firebase](firebase-4_jbbrid.png)
 
 We're also going to set up our authentication so head to the authentication section and choose whichever providers you would like to support and follow their instructions on how to set it up. The 'Google' provider works with 0 config so if you just want a quick start that's what I would recommend. I also followed the docs and enabled the 'GitHub' provider but that's up to you.
 
-![Step 5 of configuring firebase](/images/firebase-5.png)
+![Step 5 of configuring firebase](firebase-5_eodv8k.png)
 
 ### The model
 
@@ -99,7 +99,7 @@ Before we jump into the code let's structure the application in our head. We nee
 
 I personally don't like the way create-react-app so I'm gonna restructure the code a bit, but this is how **_I_** like to do it and you don't have to do it this way. It's well known in the React community that you can basically do whatever you want as long as you're comfortable with it, so do as you like but make sure to translate the paths that I'm using.
 
-![File structure changes](/images/file-structure.png)
+![File structure changes](file-structure_ss6urc.png)
 
 ### Configure Firebase in your code
 
@@ -244,19 +244,19 @@ As you can see those methods we passed down to it are being used when the button
 
 Now that we have authentication set up we need to set up our database, so let's head to our firebase console again and let's make a firestore database. In your console click on database in the sidebar and choose 'Cloud Firestore' if it's not already selected. Then click start collection:
 
-![Step 1 of creating a firestore database](/images/firestore-1.png)
+![Step 1 of creating a firestore database](firestore-1_gzucku.png)
 
 I'm going to name the collection 'users' because that's how we're going to manage our data:
 
-![Step 2 of creating a firestore database](/images/firestore-2.png)
+![Step 2 of creating a firestore database](firestore-2_vveszt.png)
 
 For the first document I'm going to just add a test one because we're going to delete this right after:
 
-![Step 3 of creating a firestore database](/images/firestore-3.png)
+![Step 3 of creating a firestore database](firestore-3_potmle.png)
 
 Now let's delete the test document:
 
-![Step 4 of creating a firestore database](/images/firestore-4.png)
+![Step 4 of creating a firestore database](firestore-4_ofdgyw.png)
 
 If you remember I told you before that it doesn't matter if your configuration object gets leaked that's because we're going to head to the 'rules' section and set up a rule so that an authenticated user can only access their file. The language is pretty self explanatory so here's the rule:
 

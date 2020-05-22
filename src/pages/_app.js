@@ -1,22 +1,14 @@
-import React from "react";
-import App from "next/app";
-import { AnimatePresence } from "framer-motion";
-import "public/hljs.css";
+import "public/styles/base.css";
+import "public/styles/hljs.css";
+import Nav from "src/components/Nav";
 
-import Grotesk from "src/components/Grotesk";
-
-class MyApp extends App {
-  render() {
-    const { Component, pageProps, router } = this.props;
-
-    return (
-      <Grotesk>
-        <AnimatePresence exitBeforeEnter>
-          <Component {...pageProps} key={router.route} />
-        </AnimatePresence>
-      </Grotesk>
-    );
-  }
+function MyApp({ Component, pageProps }) {
+  return (
+    <main>
+      <Nav />
+      <Component {...pageProps} />
+    </main>
+  );
 }
 
 export default MyApp;

@@ -1,83 +1,39 @@
-import Head from "next/head";
-import React from "react";
-import Link from "next/link";
+import SEO from "src/components/SEO";
+import { getMarkdownFile } from "src/lib/utils";
+import useCloudinary from "src/lib/useCloudinary";
 
-import { motion } from "framer-motion";
-import { textVariants } from "src/shared/animationVariants";
+const Post = ({ post }) => {
+  useCloudinary(process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME);
 
-const Post = ({ post }) => (
-  <>
-    <Head>
-      <title>{post.attributes.title} - Kartik Nair</title>
-      <meta name="title" content={`${post.attributes.title} - Kartik Nair`} />
-      <meta name="description" content={post.attributes.description} />
+  return (
+    <>
+      <SEO
+        title={post.data.title}
+        description={post.data.description}
+        type="post"
+        url={`${process.env.NEXT_PUBLLIC_HOME_URL}/${post.slug}`}
+      />
+      <h2>{post.data.title}</h2>
+      <small>{new Date(post.data.date).toDateString()}</small>
+      <p>{post.data.description}</p>
+      <p>—</p>
 
-      <meta property="og:type" content="article" />
-      <meta
-        property="og:url"
-        content={`https://kartikn.me/writing/${post.slug}`}
-      />
-      <meta
-        property="og:title"
-        content={`${post.attributes.title} - Kartik Nair`}
-      />
-      <meta property="og:description" content={post.attributes.description} />
-      <meta property="og:image" content={`/images/${post.slug}.png`} />
-
-      <meta property="twitter:card" content="summary_large_image" />
-      <meta
-        property="twitter:url"
-        content={`https://kartikn.me/writing/${post.slug}`}
-      />
-      <meta
-        property="twitter:title"
-        content={`${post.attributes.title} - Kartik Nair`}
-      />
-      <meta
-        property="twitter:description"
-        content={post.attributes.description}
-      />
-      <meta
-        property="twitter:image"
-        content={`https://kartikn.me/images/${post.slug}.png`}
-      />
-    </Head>
-    <motion.div initial="exit" animate="enter" exit="exit">
-      <main className="post-page">
-        <motion.div variants={textVariants}>
-          <Link href="/writing">
-            <a>See more posts</a>
-          </Link>
-          <h1>{post.attributes.title}</h1>
-          <div
-            className="post-body"
-            dangerouslySetInnerHTML={{ __html: post.body }}
-          ></div>
-        </motion.div>
-      </main>
-    </motion.div>
-  </>
-);
+      <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
+    </>
+  );
+};
 
 export async function getStaticPaths() {
   const fs = require("fs");
-
   const posts = fs.readdirSync("content/writing");
   const paths = posts.map((post) => `/writing/${post.slice(0, -3)}`);
   return { paths, fallback: false };
 }
 
 export async function getStaticProps({ params }) {
-  const fs = require("fs");
-  const fm = require("front-matter");
-  const marked = require("src/shared/marked");
-
-  const data = fs.readFileSync(`content/writing/${params.slug}.md`, "utf8");
-  const post = fm(data);
-  post.body = marked(post.body);
-  post.slug = params.slug;
-
-  return { props: { post } };
+  return {
+    props: { post: getMarkdownFile(`content/writing/${params.slug}.md`) },
+  };
 }
 
 export default Post;

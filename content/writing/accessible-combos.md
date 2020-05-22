@@ -104,7 +104,7 @@ document.head.appendChild(newStyle);
 
 Pretty simple right? And the results are very pleasing to look at:
 
-![A demo of the result](/images/combos-demo.gif)
+![A demo of the result](combos-demo_ntlpp0.gif)
 
 ### Learning how to do it ourselves
 
@@ -129,7 +129,7 @@ console.log(hexToRgb("#ffffff")); // [255, 255, 255]
 
 Nice! That was pretty simple. Now let's implement the relative luminance formula using what WCAG gives us. This is the formula they have on their website:
 
-![The formula on WCAG's website](/images/wcag-formula.png)
+![The formula on WCAG's website](wcag-formula_ny9qlg.png)
 
 So mapping this out would be like this. Take each value from our RGB array and divide it by 255 and then based on its size perform one of the two formulas given. Once we have the 3 values for each channel we'll do the final formula given at the top to get our luminance. Sounds good? Let's code it:
 

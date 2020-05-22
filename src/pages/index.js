@@ -1,99 +1,84 @@
-import HomeLayout from "../components/HomeLayout";
+import SEO from "src/components/SEO";
+import { getMarkdownFiles } from "src/lib/utils";
 import Link from "next/link";
+import useCloudinary from "src/lib/useCloudinary";
 
-import { motion } from "framer-motion";
-import { postVariants } from "src/shared/animationVariants";
+const Home = ({ projects }) => {
+  useCloudinary(process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME);
 
-const Home = ({ posts }) => {
   return (
-    <HomeLayout
-      title="Kartik Nair"
-      bio="Developer and designer striving to be better. Below are the projects I've worked on in the past year"
-      writing={true}
-    >
-      <div className="posts">
-        {posts.map((post) => {
-          return (
-            <div className="post" key={post.path}>
-              <motion.div variants={postVariants}>
-                <img
-                  src={post.attributes.image}
-                  alt={post.attributes.description}
-                ></img>
-                <h3>{post.attributes.title}</h3>
-                <p>{post.attributes.description}</p>
-                <div className="links">
-                  <Link
-                    scroll={false}
-                    href="/work/[project]"
-                    as={`/work/${post.path}`}
-                  >
-                    <a title="Learn more" className="dim mr1">
-                      Learn more
-                    </a>
-                  </Link>
-                  <a
-                    href={post.attributes.link}
-                    title="See live"
-                    className="dim"
-                  >
-                    See in action
-                  </a>
-                </div>
-              </motion.div>
+    <div>
+      <SEO title="Kartik Nair" description="My personal website and blog" />
+      <h3>
+        Hey there, I'm Kartik Nair. I like creating and writing about websites.
+        <br />
+        <br />
+        Currently I'm finishing my computer systems degree at Middlesex
+        University while also building web experiences & writing about them.
+      </h3>
+
+      <div className="projects">
+        {projects.map((project) => (
+          <div className="project" key={project.slug}>
+            <img
+              data-src={`https://res.cloudinary.com/kartiknair/image/upload/w_auto,c_scale,dpr_auto/${project.data.image}`}
+              alt={project.data.description}
+              className="cld-responsive"
+            />
+            <h4>{project.data.title}</h4>
+            <p>{project.data.description}</p>
+            <div className="links">
+              <Link href="/[slug]" as={`/${project.slug}`}>
+                <a>Learn more</a>
+              </Link>
+              <a href={project.data.link}>See it in action</a>
             </div>
-          );
-        })}
+          </div>
+        ))}
       </div>
       <style jsx>
         {`
-          img {
-            max-width: 100%;
-          }
-
-          .mr1 {
-            margin-right: 1rem;
+          .links {
+            display: flex;
           }
 
           .links a {
-            color: inherit;
-            text-decoration: underline;
+            margin: 0;
           }
 
-          .post {
-            width: 100%;
-            text-decoration: none;
-            margin: 2rem 0 3.5rem 0;
+          .links a:first-child {
+            margin-right: 1rem;
+          }
+
+          .projects {
+            margin-top: 2rem;
+          }
+
+          .project {
+            margin-bottom: 2rem;
+          }
+
+          .project h4 {
+            margin: 1.5rem 0 0 0;
+          }
+
+          h3 {
+            margin-bottom: 3rem;
+          }
+
+          @media (max-width: 768px) {
+            h3 {
+              font-size: 1.25rem;
+            }
           }
         `}
       </style>
-    </HomeLayout>
+    </div>
   );
 };
 
 export async function getStaticProps() {
-  const fs = require("fs");
-  const fm = require("front-matter");
-
-  const posts = fs.readdirSync("content/work");
-  let newPosts = [];
-
-  posts.forEach((post) => {
-    const data = fs.readFileSync(`content/work/${post}`, "utf8");
-    let newPost = fm(data);
-    newPost.path = post.slice(0, -3);
-    newPosts.push(newPost);
-  });
-
-  newPosts.sort((a, b) => {
-    return b.attributes.date - a.attributes.date;
-  });
-
-  return {
-    props: {
-      posts: newPosts,
-    },
-  };
+  return { props: { projects: getMarkdownFiles("content/work") } };
 }
 
 export default Home;
