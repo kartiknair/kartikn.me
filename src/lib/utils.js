@@ -5,7 +5,7 @@ import hljs from "highlight.js";
 
 const renderer = new marked.Renderer();
 renderer.image = (href, title, text) => {
-  return `<img data-src="https://res.cloudinary.com/kartiknair/image/upload/w_auto,c_scale/${href}" loading="lazy" alt="${text}" class="cld-responsive" />`;
+  return `<img data-src="${process.env.NEXT_PUBLIC_CLOUDINARY_URL}/${href}" loading="lazy" alt="${text}" class="cld-responsive" />`;
 };
 
 marked.setOptions({

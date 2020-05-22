@@ -21,7 +21,7 @@ const Home = ({ projects }) => {
         {projects.map((project) => (
           <div className="project" key={project.slug}>
             <img
-              data-src={`https://res.cloudinary.com/kartiknair/image/upload/w_auto,c_scale,dpr_auto/${project.data.image}`}
+              data-src={`${process.env.NEXT_PUBLIC_CLOUDINARY_URL}/${project.data.image}`}
               alt={project.data.description}
               className="cld-responsive"
             />
