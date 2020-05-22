@@ -1,9 +1,9 @@
 import SEO from "src/components/SEO";
 import { getMarkdownFile } from "src/lib/utils";
-import useCloudinary from "src/lib/useCloudinary";
+import { useCloudinaryAndScroll } from "src/lib/hooks";
 
 const Post = ({ post }) => {
-  useCloudinary(process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME);
+  useCloudinaryAndScroll(process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME);
 
   return (
     <>

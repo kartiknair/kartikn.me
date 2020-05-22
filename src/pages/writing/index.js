@@ -1,10 +1,12 @@
 import SEO from "src/components/SEO";
 import { getMarkdownFiles } from "src/lib/utils";
 import Link from "next/link";
-import useCloudinary from "src/lib/useCloudinary";
+import { useEffect } from "react";
 
 const Writing = ({ posts }) => {
-  useCloudinary(process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div>
@@ -15,7 +17,12 @@ const Writing = ({ posts }) => {
       />
 
       {posts.map((post) => (
-        <Link href="writing/[slug]" as={`writing/${post.slug}`} key={post.slug}>
+        <Link
+          href="writing/[slug]"
+          as={`writing/${post.slug}`}
+          scroll={false}
+          key={post.slug}
+        >
           <a className="dim post">
             <h4>{post.data.title}</h4>
             <p>{post.data.description}</p>

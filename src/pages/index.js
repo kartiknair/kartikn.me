@@ -1,10 +1,10 @@
 import SEO from "src/components/SEO";
 import { getMarkdownFiles } from "src/lib/utils";
 import Link from "next/link";
-import useCloudinary from "src/lib/useCloudinary";
+import { useCloudinaryAndScroll } from "src/lib/hooks";
 
 const Home = ({ projects }) => {
-  useCloudinary(process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME);
+  useCloudinaryAndScroll(process.env.NEXT_PUBLIC_CLOUDINARY_CLOUDNAME);
 
   return (
     <div>
@@ -28,7 +28,7 @@ const Home = ({ projects }) => {
             <h4>{project.data.title}</h4>
             <p>{project.data.description}</p>
             <div className="links">
-              <Link href="/[slug]" as={`/${project.slug}`}>
+              <Link href="/[slug]" as={`/${project.slug}`} scroll={false}>
                 <a>Learn more</a>
               </Link>
               <a href={project.data.link}>See it in action</a>

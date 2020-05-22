@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 
-const useCloudinary = (cloudname) => {
+export const useCloudinaryAndScroll = (cloudname) => {
   useEffect(() => {
+    history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+
     const cl = cloudinary.Cloudinary.new({ cloud_name: cloudname });
     cl.responsive();
-  });
+  }, []);
 };
-
-export default useCloudinary;
