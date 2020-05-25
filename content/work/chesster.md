@@ -1,7 +1,7 @@
 ---
 title: Chesster's Branding
 description: Chesster is a Non-Profit based in India that organizes chess tournaments to raise money for charities. They approached me looking for a fresh new identity for their organization and after a few weeks of working together with them I created this modern & minimal visual identity.
-date: 1589993500002
+date: 1589993500001
 image: chesster_b26tlp.png
 link: https://instagram.com/chesster_ig
 ---

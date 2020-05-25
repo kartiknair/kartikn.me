@@ -55,7 +55,7 @@ const Home = ({ projects }) => {
           }
 
           .project {
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
           }
 
           .project h4 {
