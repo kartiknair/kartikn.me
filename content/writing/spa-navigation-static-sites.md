@@ -62,7 +62,7 @@ window.onload = function () {
 };
 ```
 
-**Quick note:** Use `link.getAttribute("href")` instead of `link.href` to get the actual href provided to the DOM. For example an a tag like this: `<a href="/foo">To foo</a>` when asked directly for href would give `[http://localhost:5500/foo](http://localhost:5500/foo)` (or whatever domain it's currently hosted on) but `getAttribute("href")` would return "/foo".
+**Quick note:** Use `link.getAttribute("href")` instead of `link.href` to get the actual href provided to the DOM. For example an a tag like this: `<a href="/foo">To foo</a>` when asked directly for href would give `http://localhost:5500/foo` (or whatever domain it's currently hosted on) but `getAttribute("href")` would return "/foo".
 
 Great now our links change the URL without a page refresh but our DOM isn't updating, the webpage looks exactly the same. So let's deal with that.
 
@@ -126,7 +126,7 @@ window.onload = function () {
 }
 ```
 
-Great now everything works as expected. We've come a long way. But... we can still do some optimization. Now we're just updating the entire html even if a lot of it is the exact same. And while it won't have much difference for smaller websites, on a larger website this would be pretty jarring. Which is why we're gonna use a tiny (550byted minzipped) library called *[µ*domdiff](https://github.com/WebReflection/udomdiff) for this.
+Great now everything works as expected. We've come a long way. But... we can still do some optimization. Now we're just updating the entire html even if a lot of it is the exact same. And while it won't have much difference for smaller websites, on a larger website this would be pretty jarring. Which is why we're gonna use a tiny (550byted minzipped) library called [*µ*domdiff](https://github.com/WebReflection/udomdiff) for this.
 
 *µ*domdiff is just a single function and it takes 4 parameters (& a 5th optional one). Here's what it needs:
 
