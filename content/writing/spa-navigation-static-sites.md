@@ -20,46 +20,50 @@ It gives us a few functions that we can use to manipulate the browser history. T
 
 Alright so let's start implementing this in code. First we're gonna listen for the page load and then loop through all our links.
 
-```js
+```javascript
 window.onload = function () {
-  document.querySelectorAll("a").forEach((link) => {
-    // do something with link
-  });
-};
+	document.querySelectorAll('a').forEach((link) => {
+		// do something with link
+	})
+}
 ```
 
 Now with each link we have to check if they are internal or not. For this we can use the `host` attribute that every `a` tag has & compare it to the `window.location.host`, if they are the same the link is internal. We're also gonna add a `data-internal` or `data-external` attribute to the link as a way to separately style them later:
 
-```js
+```javascript
 window.onload = function () {
-  document.querySelectorAll("a").forEach((link) => {
-    if (link.host === window.location.host) {
-      link.setAttribute("data-internal", true);
-    } else {
-      link.setAttribute("data-external", true);
-    }
-  });
-};
+	document.querySelectorAll('a').forEach((link) => {
+		if (link.host === window.location.host) {
+			link.setAttribute('data-internal', true)
+		} else {
+			link.setAttribute('data-external', true)
+		}
+	})
+}
 ```
 
 Now that we have this basic setup we need to actually intercept when an internal link is clicked and then use `history.pushState()` to add an entry to the browser history. But `pushState()` takes three arguments: state, title, & URL. In our case we'll just use our link's `href` as the `route` in our state object and also pass it as the title & URL. Here's how that looks:
 
-```js
+```javascript
 window.onload = function () {
-  document.querySelectorAll("a").forEach((link) => {
-    if (link.host === window.location.host) {
-      link.setAttribute("data-internal", true);
+	document.querySelectorAll('a').forEach((link) => {
+		if (link.host === window.location.host) {
+			link.setAttribute('data-internal', true)
 
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        const destination = link.getAttribute("href");
-        history.pushState({ route: destination }, destination, destination);
-      });
-    } else {
-      link.setAttribute("data-external", true);
-    }
-  });
-};
+			link.addEventListener('click', (e) => {
+				e.preventDefault()
+				const destination = link.getAttribute('href')
+				history.pushState(
+					{ route: destination },
+					destination,
+					destination
+				)
+			})
+		} else {
+			link.setAttribute('data-external', true)
+		}
+	})
+}
 ```
 
 **Quick note:** Use `link.getAttribute("href")` instead of `link.href` to get the actual href provided to the DOM. For example an a tag like this: `<a href="/foo">To foo</a>` when asked directly for href would give `http://localhost:5500/foo` (or whatever domain it's currently hosted on) but `getAttribute("href")` would return "/foo".
@@ -70,11 +74,11 @@ Great now our links change the URL without a page refresh but our DOM isn't upda
 
 To update the DOM we actually need to get the new DOM. Since the page to which the link is pointing actually does exist, what we can do is use `fetch()` to get it's HTML content & then replace our current HTML with that. So let's make an async function called `updateDOM` to do this:
 
-```js
+```javascript
 async function updateDom(path) {
-  const res = await fetch(path);
-  const data = await res.text();
-  document.querySelector("html").innerHTML = data;
+	const res = await fetch(path)
+	const data = await res.text()
+	document.querySelector('html').innerHTML = data
 }
 ```
 
@@ -82,7 +86,7 @@ Pretty simple as you can see, when provided with a path like `/about` or `/blog/
 
 Now we need to call this function when our link is clicked:
 
-```js
+```javascript
 window.onload = function () {
   document.querySelectorAll("a").forEach(link => {
     if (link.host === window.location.host) {
@@ -103,20 +107,20 @@ window.onload = function () {
 
 Great! Now you should've seen your link working. But this has a few issues. It'll only work on the first page. To fix this you need to import your script in all your html files & also we're gonna call `updateLinks()` as soon as we update the DOM. We also have to make sure that we scroll back to the top like a regular link otherwise we might confuse the user. So now our `updateDom` function is looking like this:
 
-```js
+```javascript
 async function updateDom(path) {
-  const res = await fetch(path);
-  const data = await res.text();
-  document.querySelector("html").innerHTML = data;
+	const res = await fetch(path)
+	const data = await res.text()
+	document.querySelector('html').innerHTML = data
 
-  updateLinks();
-  window.scrollTo(0, 0);
+	updateLinks()
+	window.scrollTo(0, 0)
 }
 ```
 
 Now all we're missing is the back and forward buttons. To deal with this we need to actually listen for a window event called `onpopstate`, this event is fired when the back or forward button is clicked & the important thing to note is that it's fired after the location is updated. Which means we can just update our DOM using `window.location.pathname` as our new path. So let's add that to our code:
 
-```js
+```javascript
 window.onload = function () {
   {...}
 
@@ -130,23 +134,23 @@ Great now everything works as expected. We've come a long way. But... we can sti
 
 *µ*domdiff is just a single function and it takes 4 parameters (& a 5th optional one). Here's what it needs:
 
-```js
+```javascript
 futureNodes = udomdiff(
-  parent, // where changes happen
-  [...currentNodes], // Array of current items/nodes
-  [...futureNodes], // Array of future items/nodes (returned)
-  get, // a callback to retrieve the node
-  ****before // the (optional) anchored node to insertBefore
-);
+	parent, // where changes happen
+	[...currentNodes], // Array of current items/nodes
+	[...futureNodes], // Array of future items/nodes (returned)
+	get, // a callback to retrieve the node
+	before // the (optional) anchored node to insertBefore
+)
 
-console.log("The new DOM is now:", futureNodes);
+console.log('The new DOM is now:', futureNodes)
 ```
 
 In our case the parent will be the `<html>` element, the `currentNodes` will be the html elements child nodes, the `futureNodes` will be our html which we received from fetching, & our callback can just be a simple return parameter function.
 
 The only problem is that our fetched html is text & `udomdiff` expects it to be an array of nodes. So we're gonna use `DOMParser` and it's `parseFromText()` function to convert our text into DOM nodes. Then we're gonna use `querySelector` to get it's html element's child nodes. So let's start with that:
 
-```js
+```javascript
 async function updateDom(path) {
   {...}
 
@@ -160,7 +164,7 @@ async function updateDom(path) {
 
 Now that we have that let's use `udomdiff`:
 
-```js
+```javascript
 async function updateDom(path) {
   {...}
 

@@ -27,9 +27,9 @@ npm init -y
 
 Now we're gonna install some packages that are gonna make our life a hell of a lot easier while dealing with the data. The packages are:
 
-- **front-matter** for extracting the yaml front matter from our posts
-- **marked** for converting markdown to html
-- **highlight.js** for syntax highlighting in code. We can install all of these using the following command:
+-   **front-matter** for extracting the yaml front matter from our posts
+-   **marked** for converting markdown to html
+-   **highlight.js** for syntax highlighting in code. We can install all of these using the following command:
 
 ```bash
 npm i front-matter marked highlight.js
@@ -45,21 +45,21 @@ First of all let's create the script that will run when we call `build`. We'll p
 
 ```json
 {
-  "name": "planar",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "node ./src/index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "front-matter": "^3.1.0",
-    "highlight.js": "^9.18.1",
-    "marked": "^0.8.0"
-  }
+	"name": "planar",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "node ./src/index.js"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"front-matter": "^3.1.0",
+		"highlight.js": "^9.18.1",
+		"marked": "^0.8.0"
+	}
 }
 ```
 
@@ -77,32 +77,32 @@ But since this projects scope is not very large I'm gonna go with a very simple 
 
 We can put the decisions we made in a `config.js` file so we can access it from anywhere by just requiring it. I put them in a `dev` object because there are other properties which we will add later. So this is how it looks right now:
 
-```js
+```javascript
 const config = {
-  dev: {
-    postsdir: "./content",
-    outdir: "./public",
-  },
-};
-module.exports = config;
+	dev: {
+		postsdir: './content',
+		outdir: './public',
+	},
+}
+module.exports = config
 ```
 
 ### Getting the posts
 
 Alright let's start first of all with getting all the posts from the content directory. We can do this using the `fs` api that node.js gives us. So first of all we import `fs` and create an instance of it:
 
-```js
-const fs = require("fs");
+```javascript
+const fs = require('fs')
 ```
 
 Now we can use the methods that `fs` provides in this syntax: `fs.methodName()`. For getting posts we can use the `readdirSync()` method that `fs` provides. So let's see how it would look if we just got all the posts and logged them to the console:
 
-```js
-const config = require("./config");
+```javascript
+const config = require('./config')
 const posts = fs
-  .readdirSync(config.dev.postsdir)
-  .map((post) => post.slice(0, -3));
-console.log(posts);
+	.readdirSync(config.dev.postsdir)
+	.map((post) => post.slice(0, -3))
+console.log(posts)
 ```
 
 Now run `npm run build` in your console and you should see a list of posts if you did everything right. The reason we use `slice()` in the code is to get rid of the `.md` extension. You'll see why we have to do that later on.
@@ -114,7 +114,7 @@ If you remember in the beginning we installed an npm package called front-matter
 ```markdown
 ---
 title: Post One
-date: "2020-02-28T22:19:00Z"
+date: '2020-02-28T22:19:00Z'
 description: My reasons for starting a blog.
 ---
 
@@ -127,64 +127,69 @@ So now since we've gotten the posts in the previous step now we can parse them u
 
 We can do that using the provided `fs.readFile()` method. Here's how it would look just logging the content of the file to the console:
 
-```js
-console.log(fs.readFileSync("./foo.md"));
+```javascript
+console.log(fs.readFileSync('./foo.md'))
 ```
 
 But since we want reusable code that we can use for every single post in a loop, we'll put it in a function called `createPost()`. This function will use `front-matter` to take the content of the file and give us an object. This object will have the front-matter properties we set in a property called attributes & the rest of the content will be in a property called body. We can use `front-matter` by creating an instance to it using require and then calling it on our data once we read it from the file.
 
 Here's how that would look like:
 
-```js
-const config = require("./config");
-const fm = require("front-matter");
-const marked = require("marked");
+```javascript
+const config = require('./config')
+const fm = require('front-matter')
+const marked = require('marked')
 const createPost = (postPath) => {
-  const data = fs.readFileSync(`${config.dev.postsdir}/${postPath}.md`, "utf8");
-  const content = fm(data);
-  content.body = marked(content.body);
-  content.path = postPath;
-  return content;
-};
-module.exports = createPost;
+	const data = fs.readFileSync(
+		`${config.dev.postsdir}/${postPath}.md`,
+		'utf8'
+	)
+	const content = fm(data)
+	content.body = marked(content.body)
+	content.path = postPath
+	return content
+}
+module.exports = createPost
 ```
 
 If you check out the code you'll see that I call marked on the body of our post. All this does is convert the markdown into HTML so we can easily display it in our website later. I've also added the path of the post as an extra property because we will need it later on.
 
 Now let's use this method in `index.js` and just log the output:
 
-```js
-const config = require("./config");
-const createPost = require("./posts.js");
+```javascript
+const config = require('./config')
+const createPost = require('./posts.js')
 const posts = fs
-  .readdirSync(config.dev.postsdir)
-  .map((post) => post.slice(0, -3))
-  .map((post) => postMethods.createPost(post));
-console.log(posts);
+	.readdirSync(config.dev.postsdir)
+	.map((post) => post.slice(0, -3))
+	.map((post) => postMethods.createPost(post))
+console.log(posts)
 ```
 
 ### Configuring marked and syntax highlighting
 
 Since we would like to use highlight.js to highlight our code. We can do that using marked and it's configuration object. Make a file called `marked.js` and in that we'll create an instance of `marked` configure it and then export it. Here's how that looks:
 
-```js
-const marked = require("marked");
+```javascript
+const marked = require('marked')
 marked.setOptions({
-  renderer: new marked.Renderer(),
-  highlight: function (code, language) {
-    const hljs = require("highlight.js");
-    const validLanguage = hljs.getLanguage(language) ? language : "plaintext";
-    return hljs.highlight(validLanguage, code).value;
-  },
-  pedantic: false,
-  gfm: true,
-  breaks: false,
-  sanitize: false,
-  smartLists: true,
-  smartypants: false,
-  xhtml: false,
-});
-module.exports = marked;
+	renderer: new marked.Renderer(),
+	highlight: function (code, language) {
+		const hljs = require('highlight.js')
+		const validLanguage = hljs.getLanguage(language)
+			? language
+			: 'plaintext'
+		return hljs.highlight(validLanguage, code).value
+	},
+	pedantic: false,
+	gfm: true,
+	breaks: false,
+	sanitize: false,
+	smartLists: true,
+	smartypants: false,
+	xhtml: false,
+})
+module.exports = marked
 ```
 
 So now every time you use `marked` require it from this file directly.
@@ -193,13 +198,13 @@ So now every time you use `marked` require it from this file directly.
 
 Now we start with the actual page generation. To start of, we want it to create the public folder, if it doesn't exist already, we can do that using the `fs.mkdirSync()` and `fs.existsSync()` functions. Let's add that to our `index.js` file:
 
-```js
-if (!fs.existsSync(config.dev.outdir)) fs.mkdirSync(config.dev.outdir);
+```javascript
+if (!fs.existsSync(config.dev.outdir)) fs.mkdirSync(config.dev.outdir)
 ```
 
 Now in our `posts.js` file let us make a `createPosts()` function, that will create and write the HTML files to the public directory. But before that we need a helper function called `posthtml` that will take the post JSON object and return a complete HTML page that we can simply write to a file. We will use the power of template literals to make our life easier in this function here's how it looks:
 
-```js
+```javascript
 const posthtml = (data) => `
 <!DOCTYPE html>
 <html lang="en">
@@ -221,48 +226,48 @@ const posthtml = (data) => `
         </div>
     </body>
 </html>
-`;
+`
 ```
 
 The reason I create a `new Date()` when adding the date to the post is so that all the dates have a consistent format. This is quite an opinionated way of doing it as it requires the date provided in the front-matter to be a "number representing the milliseconds elapsed since the UNIX epoch". However I don't mind running a quick `Date.now()` in the browser dev tools to get that number before I post. You can change that in the code if you would like 🤷‍♀️.
 
 Now we can create a function called `createPosts()` that'll take the output of the `createPost()` function and generate an HTML file. Here's how it looks:
 
-```js
+```javascript
 const createPosts = (posts) => {
-  posts.forEach((post) => {
-    if (!fs.existsSync(`${config.dev.outdir}/${post.path}`))
-      fs.mkdirSync(`${config.dev.outdir}/${post.path}`);
-    fs.writeFile(
-      `${config.dev.outdir}/${post.path}/index.html`,
-      posthtml(post),
-      (e) => {
-        if (e) throw e;
-        console.log(`${post.path}/index.html was created successfully`);
-      }
-    );
-  });
-};
+	posts.forEach((post) => {
+		if (!fs.existsSync(`${config.dev.outdir}/${post.path}`))
+			fs.mkdirSync(`${config.dev.outdir}/${post.path}`)
+		fs.writeFile(
+			`${config.dev.outdir}/${post.path}/index.html`,
+			posthtml(post),
+			(e) => {
+				if (e) throw e
+				console.log(`${post.path}/index.html was created successfully`)
+			}
+		)
+	})
+}
 module.exports = {
-  createPost: createPost,
-  createPosts: createPosts,
-};
+	createPost: createPost,
+	createPosts: createPosts,
+}
 ```
 
 As you can see it doesn't generate a file called `postname.html` but rather it makes a directory called `postname` and then adds and `index.html` in that directory so that the path for that post in the browser will be `yourwebsite/postname` not `yourwebsite/postname.html`.
 
 Now let's call it in `index.js` and see if it worked:
 
-```js
-const fs = require("fs");
-const postMethods = require("./posts");
-const config = require("./config");
+```javascript
+const fs = require('fs')
+const postMethods = require('./posts')
+const config = require('./config')
 const posts = fs
-  .readdirSync(config.dev.postsdir)
-  .map((post) => post.slice(0, -3))
-  .map((post) => postMethods.createPost(post));
-if (!fs.existsSync(config.dev.outdir)) fs.mkdirSync(config.dev.outdir);
-postMethods.createPosts(posts);
+	.readdirSync(config.dev.postsdir)
+	.map((post) => post.slice(0, -3))
+	.map((post) => postMethods.createPost(post))
+if (!fs.existsSync(config.dev.outdir)) fs.mkdirSync(config.dev.outdir)
+postMethods.createPosts(posts)
 ```
 
 If everything worked right you should've seen a `public` directory pop up with a few directories in it (based on how many posts you had).
@@ -271,27 +276,27 @@ If everything worked right you should've seen a `public` directory pop up with a
 
 This blog will also include a small about section in it's homepage for the author, so we need to add the info for that into our `config.js` file. So here's our revised `config.js` file:
 
-```js
+```javascript
 const config = {
-  blogName: "Blog",
-  blogDescription: "Sharing what I learn as a web developer & designer",
-  authorName: "Kartik Nair",
-  authorDescription:
-    "a web developer and designer making lot's of stuff in Dubai",
-  authorTwitter: "https://twitter.com/kartiknair",
-  dev: {
-    postsdir: "./content",
-    outdir: "./public",
-  },
-};
-module.exports = config;
+	blogName: 'Blog',
+	blogDescription: 'Sharing what I learn as a web developer & designer',
+	authorName: 'Kartik Nair',
+	authorDescription:
+		"a web developer and designer making lot's of stuff in Dubai",
+	authorTwitter: 'https://twitter.com/kartiknair',
+	dev: {
+		postsdir: './content',
+		outdir: './public',
+	},
+}
+module.exports = config
 ```
 
 ### The homepage
 
 The homepage will be the `index.html` file in the public directory. It should have a header with the blog's name and a small about section for the author. We can use template literals like we did before to generate the HTML for that. Let's call the function `homepage()` and put it in a file called `homepage.js` . Here's how that file looks now:
 
-```js
+```javascript
 const homepage = (posts) => `
 <!DOCTYPE html>
 <html lang="en">
@@ -307,66 +312,66 @@ const homepage = (posts) => `
                 <h1>${config.blogName}</h1>
                 <p>—</p>
                 <p>This blog is written by ${config.authorName}, ${
-  config.authorDescription
+	config.authorDescription
 }. To find out what he's up to <a href="${
-  config.authorTwitter
+	config.authorTwitter
 }">follow him on twtter</a></p>
                 <hr />
             </header>
             <div class="posts">
                 ${posts
-                  .map(
-                    (post) => `<div class="post">
+					.map(
+						(post) => `<div class="post">
                     <h3><a href="./${post.path}">${
-                      post.attributes.title
-                    }</a></h3>
+							post.attributes.title
+						}</a></h3>
                         <small>${new Date(
-                          parseInt(post.attributes.date)
-                        ).toDateString()}</small>
+							parseInt(post.attributes.date)
+						).toDateString()}</small>
                         <p>${post.attributes.description}</p>
                     </div>`
-                  )
-                  .join("")}
+					)
+					.join('')}
             </div>
             <footer>
                 ${`<p>© ${new Date().getFullYear()} ${
-                  config.authorName
-                }, Find the code on <a href="github.com/kartiknair/blog">GitHub</a></p>`}
+					config.authorName
+				}, Find the code on <a href="github.com/kartiknair/blog">GitHub</a></p>`}
             </footer>
         </div>
     </body>
 </html>
-`;
+`
 ```
 
 Now we need to actually create the file so we can add this HTML to it. We can make that a function called `addHomepage()` and also add that to the same file. Here's how it looks:
 
-```js
+```javascript
 const addHomePage = (posts) => {
-  fs.writeFile(`${config.dev.outdir}/index.html`, homepage(posts), (e) => {
-    if (e) throw e;
-    console.log(`index.html was created successfully`);
-  });
-};
+	fs.writeFile(`${config.dev.outdir}/index.html`, homepage(posts), (e) => {
+		if (e) throw e
+		console.log(`index.html was created successfully`)
+	})
+}
 ```
 
 Now we can simply export it out using `module.exports = addHomePage` and call it in our `index.js` file. Here's our revised `index.js` file:
 
-```js
-const fs = require("fs");
-const postMethods = require("./posts");
-const config = require("./config");
-const addHomePage = require("./homepage");
+```javascript
+const fs = require('fs')
+const postMethods = require('./posts')
+const config = require('./config')
+const addHomePage = require('./homepage')
 const posts = fs
-  .readdirSync(config.dev.postsdir)
-  .map((post) => post.slice(0, -3))
-  .map((post) => postMethods.createPost(post))
-  .sort(function (a, b) {
-    return b.attributes.date - a.attributes.date;
-  });
-if (!fs.existsSync(config.dev.outdir)) fs.mkdirSync(config.dev.outdir);
-postMethods.createPosts(posts);
-addHomePage(posts);
+	.readdirSync(config.dev.postsdir)
+	.map((post) => post.slice(0, -3))
+	.map((post) => postMethods.createPost(post))
+	.sort(function (a, b) {
+		return b.attributes.date - a.attributes.date
+	})
+if (!fs.existsSync(config.dev.outdir)) fs.mkdirSync(config.dev.outdir)
+postMethods.createPosts(posts)
+addHomePage(posts)
 ```
 
 As you can see I also sorted the posts by latest date so that the latest post is first.
@@ -392,20 +397,20 @@ Ah! Now my favourite part, it's time to make it look nice. I don't know about yo
 
 ```css
 :root {
-  font-size: calc(0.75rem + 0.5vw);
+	font-size: calc(0.75rem + 0.5vw);
 }
 .grotesk {
-  width: 60%;
-  margin: 5% 20% 0 20%;
+	width: 60%;
+	margin: 5% 20% 0 20%;
 }
 @media (max-width: 500px) {
-  .grotesk {
-    width: 80%;
-    margin: 8% 10% 0 10%;
-  }
+	.grotesk {
+		width: 80%;
+		margin: 8% 10% 0 10%;
+	}
 }
 img {
-  max-width: 100%;
+	max-width: 100%;
 }
 ```
 
@@ -430,15 +435,15 @@ I also customized the `fonts.scss` file that came with grotesk. Here's how it lo
 
 ```scss
 @font-face {
-  font-family: lyon;
-  src: url("../fonts/LyonDisplay-Bold.otf");
-  font-weight: 800;
+	font-family: lyon;
+	src: url('../fonts/LyonDisplay-Bold.otf');
+	font-weight: 800;
 }
-@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&display=swap");
-$font-fam-main: "EB Garamond", serif;
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500&display=swap');
+$font-fam-main: 'EB Garamond', serif;
 $font-fam-headings: lyon, serif;
-$font-fam-mono: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
-  monospace;
+$font-fam-mono: Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+	monospace;
 $line-ht-main: 1.5;
 $line-ht-mono: 1;
 ```

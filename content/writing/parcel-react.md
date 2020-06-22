@@ -43,30 +43,30 @@ Now that we have all our dependencies installed we can actually create our appli
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Parcel & React</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script src="./index.js"></script>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Parcel & React</title>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script src="./index.js"></script>
+	</body>
 </html>
 ```
 
 As you can see we create a `div` with the id of "root" and then use a script tag to link to our JavaScript file. So let's create that JavaScript file.
 
-```js
+```javascript
 // The src/index.js file
 
-import React from "react";
-import ReactDom from "react-dom";
-import "./index.css";
+import React from 'react'
+import ReactDom from 'react-dom'
+import './index.css'
 
-const App = () => <h1>Hello World</h1>;
+const App = () => <h1>Hello World</h1>
 
-ReactDom.render(<App />, document.getElementById("root"));
+ReactDom.render(<App />, document.getElementById('root'))
 ```
 
 We've kept the file very simple but you can very easily import other components & css files either from your files or from npm packages. SInce I've imported "./index.css" let's go ahead & make that file:
@@ -75,18 +75,18 @@ We've kept the file very simple but you can very easily import other components 
 /* The src/index.css file */
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 html {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+		Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 code {
-  font-family: "Courier New", Courier, monospace;
+	font-family: 'Courier New', Courier, monospace;
 }
 ```
 
@@ -98,27 +98,27 @@ We're almost done! Now go to your `package.json` and add the `start` & the `buil
 
 ```json
 {
-  "name": "react-with-parcel",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "parcel src/index.html",
-    "build": "parcel build src/index.html"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
-    "@babel/preset-react": "^7.9.4",
-    "parcel-bundler": "^1.12.4"
-  }
+	"name": "react-with-parcel",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "parcel src/index.html",
+		"build": "parcel build src/index.html"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"react": "^16.13.1",
+		"react-dom": "^16.13.1"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.9.0",
+		"@babel/preset-env": "^7.9.0",
+		"@babel/preset-react": "^7.9.4",
+		"parcel-bundler": "^1.12.4"
+	}
 }
 ```
 

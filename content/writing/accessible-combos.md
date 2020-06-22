@@ -24,29 +24,29 @@ Let's create a `src` directory and add our HTML & JavaScript file. I'm using jus
 ```html
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Accessible Combos</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="author" content="Kartik Nair" />
-    <meta
-      name="description"
-      content="Generating accessible color combinations for the web"
-    />
-    <link href="./style.css" rel="stylesheet" />
-  </head>
-  <body>
-    <main>
-      <h1>Hello accessible combos</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis minus
-        sequi nesciunt, sapiente dignissimos ut, est magni, facilis repellat
-        corrupti adipisci dicta ullam. Corrupti voluptates assumenda reiciendis
-        quod placeat maxime.
-      </p>
-    </main>
-    <script src="./index.js"></script>
-  </body>
+	<head>
+		<title>Accessible Combos</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="author" content="Kartik Nair" />
+		<meta
+			name="description"
+			content="Generating accessible color combinations for the web"
+		/>
+		<link href="./style.css" rel="stylesheet" />
+	</head>
+	<body>
+		<main>
+			<h1>Hello accessible combos</h1>
+			<p>
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis
+				minus sequi nesciunt, sapiente dignissimos ut, est magni,
+				facilis repellat corrupti adipisci dicta ullam. Corrupti
+				voluptates assumenda reiciendis quod placeat maxime.
+			</p>
+		</main>
+		<script src="./index.js"></script>
+	</body>
 </html>
 ```
 
@@ -67,7 +67,7 @@ npm i colors2k
 
 Now let's import it in our JS file and use it's contrast function:
 
-```js
+```javascript
 import { getContrast } from "colors2k";
 
 console.log(getContrast("#ffffff", "#000000");
@@ -77,29 +77,31 @@ As you can see that's pretty cool. But looping over the more than 16 million col
 
 I created a `colors.js` file and exported the colors json from there, so now in my index file I can loop through each of them to get a combo that works (by works I mean a combo that is accessible according to WCAG standards, so a contrast ratio greater than 7.1). Once I get a working combo I'm creating a style element using those colors and appending it to the head of the document:
 
-```js
-import { getContrast } from "color2k";
-import { cloudflareColors } from "./colors";
+```javascript
+import { getContrast } from 'color2k'
+import { cloudflareColors } from './colors'
 
-let accessibleCombo = null;
+let accessibleCombo = null
 
 while (!accessibleCombo) {
-  let randomPair = [
-    cloudflareColors[Math.floor(Math.random() * cloudflareColors.length)].hex,
-    cloudflareColors[Math.floor(Math.random() * cloudflareColors.length)].hex,
-  ];
+	let randomPair = [
+		cloudflareColors[Math.floor(Math.random() * cloudflareColors.length)]
+			.hex,
+		cloudflareColors[Math.floor(Math.random() * cloudflareColors.length)]
+			.hex,
+	]
 
-  if (getContrast(randomPair[0], randomPair[1]) > 7.1)
-    accessibleCombo = randomPair;
+	if (getContrast(randomPair[0], randomPair[1]) > 7.1)
+		accessibleCombo = randomPair
 }
 
-const newStyle = document.createElement("style");
+const newStyle = document.createElement('style')
 newStyle.innerHTML = `
 main {
   background-color: ${accessibleCombo[0]};
   color: ${accessibleCombo[1]};
-}`;
-document.head.appendChild(newStyle);
+}`
+document.head.appendChild(newStyle)
 ```
 
 Pretty simple right? And the results are very pleasing to look at:
@@ -114,17 +116,17 @@ So how do we calculate it then, well thankfully the [WCAG has a guideline for th
 
 This is surprisingly easy to implement as all we need to do is split the string into groupings of 2s and then use the built in `parseInt` function to convert their radix:
 
-```js
+```javascript
 const hexToRgb = (hexString) => {
-  if (hexString.startsWith("#")) hexString = hexString.substr(1);
-  return [
-    parseInt(hexString.substring(0, 2), 16),
-    parseInt(hexString.substring(2, 4), 16),
-    parseInt(hexString.substring(4, 6), 16),
-  ];
-};
+	if (hexString.startsWith('#')) hexString = hexString.substr(1)
+	return [
+		parseInt(hexString.substring(0, 2), 16),
+		parseInt(hexString.substring(2, 4), 16),
+		parseInt(hexString.substring(4, 6), 16),
+	]
+}
 
-console.log(hexToRgb("#ffffff")); // [255, 255, 255]
+console.log(hexToRgb('#ffffff')) // [255, 255, 255]
 ```
 
 Nice! That was pretty simple. Now let's implement the relative luminance formula using what WCAG gives us. This is the formula they have on their website:
@@ -133,84 +135,86 @@ Nice! That was pretty simple. Now let's implement the relative luminance formula
 
 So mapping this out would be like this. Take each value from our RGB array and divide it by 255 and then based on its size perform one of the two formulas given. Once we have the 3 values for each channel we'll do the final formula given at the top to get our luminance. Sounds good? Let's code it:
 
-```js
+```javascript
 const relativeLuminance = (rgbArray) => {
-  let [r, g, b] = rgbArray.map((channel) => {
-    return channel / 255 <= 0.03928
-      ? channel / 255 / 12.92
-      : ((channel / 255 + 0.055) / 1.055) ** 2.4;
-  });
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-};
+	let [r, g, b] = rgbArray.map((channel) => {
+		return channel / 255 <= 0.03928
+			? channel / 255 / 12.92
+			: ((channel / 255 + 0.055) / 1.055) ** 2.4
+	})
+	return 0.2126 * r + 0.7152 * g + 0.0722 * b
+}
 
-console.log(relativeLuminance(hexToRgb("#ffffff"))); // 1
+console.log(relativeLuminance(hexToRgb('#ffffff'))) // 1
 ```
 
 We're very close to the result now. All we have to do is implement the final formula where we compare the luminance of the two colors. To be specific we have to check which one is the lighter and that has to be L1 in this formula: `(L1 + 0.05) / (L2 + 0.05)`. Let's implement it:
 
-```js
+```javascript
 const getContrast = (color1, color2) => {
-  const luminance1 = relativeLuminance(hexToRgb(color1)),
-    luminance2 = relativeLuminance(hexToRgb(color2));
+	const luminance1 = relativeLuminance(hexToRgb(color1)),
+		luminance2 = relativeLuminance(hexToRgb(color2))
 
-  return luminance1 > luminance2
-    ? (luminance1 + 0.05) / (luminance2 + 0.05)
-    : (luminance2 + 0.05) / (luminance1 + 0.05);
-};
+	return luminance1 > luminance2
+		? (luminance1 + 0.05) / (luminance2 + 0.05)
+		: (luminance2 + 0.05) / (luminance1 + 0.05)
+}
 ```
 
 And that's it we've done it! Here's the full code for our vanilla implementation that performs in the exact same way as using the `colors2k` library:
 
-```js
-import { cloudflareColors } from "./colors";
+```javascript
+import { cloudflareColors } from './colors'
 
 const hexToRgb = (hexString) => {
-  if (hexString.startsWith("#")) hexString = hexString.substr(1);
-  return [
-    parseInt(hexString.substring(0, 2), 16),
-    parseInt(hexString.substring(2, 4), 16),
-    parseInt(hexString.substring(4, 6), 16),
-  ];
-};
-
-const relativeLuminance = (rgbArray) => {
-  let [r, g, b] = rgbArray.map((channel) => {
-    return channel / 255 <= 0.03928
-      ? channel / 255 / 12.92
-      : ((channel / 255 + 0.055) / 1.055) ** 2.4;
-  });
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
-};
-
-const getContrast = (color1, color2) => {
-  const luminance1 = relativeLuminance(hexToRgb(color1)),
-    luminance2 = relativeLuminance(hexToRgb(color2));
-
-  return luminance1 > luminance2
-    ? (luminance1 + 0.05) / (luminance2 + 0.05)
-    : (luminance2 + 0.05) / (luminance1 + 0.05);
-};
-
-let accessibleCombo = null;
-
-while (!accessibleCombo) {
-  let randomPair = [
-    cloudflareColors[Math.floor(Math.random() * cloudflareColors.length)].hex,
-    cloudflareColors[Math.floor(Math.random() * cloudflareColors.length)].hex,
-  ];
-
-  if (getContrast(randomPair[0], randomPair[1]) > 7.1)
-    accessibleCombo = randomPair;
+	if (hexString.startsWith('#')) hexString = hexString.substr(1)
+	return [
+		parseInt(hexString.substring(0, 2), 16),
+		parseInt(hexString.substring(2, 4), 16),
+		parseInt(hexString.substring(4, 6), 16),
+	]
 }
 
-const newStyle = document.createElement("style");
+const relativeLuminance = (rgbArray) => {
+	let [r, g, b] = rgbArray.map((channel) => {
+		return channel / 255 <= 0.03928
+			? channel / 255 / 12.92
+			: ((channel / 255 + 0.055) / 1.055) ** 2.4
+	})
+	return 0.2126 * r + 0.7152 * g + 0.0722 * b
+}
+
+const getContrast = (color1, color2) => {
+	const luminance1 = relativeLuminance(hexToRgb(color1)),
+		luminance2 = relativeLuminance(hexToRgb(color2))
+
+	return luminance1 > luminance2
+		? (luminance1 + 0.05) / (luminance2 + 0.05)
+		: (luminance2 + 0.05) / (luminance1 + 0.05)
+}
+
+let accessibleCombo = null
+
+while (!accessibleCombo) {
+	let randomPair = [
+		cloudflareColors[Math.floor(Math.random() * cloudflareColors.length)]
+			.hex,
+		cloudflareColors[Math.floor(Math.random() * cloudflareColors.length)]
+			.hex,
+	]
+
+	if (getContrast(randomPair[0], randomPair[1]) > 7.1)
+		accessibleCombo = randomPair
+}
+
+const newStyle = document.createElement('style')
 newStyle.innerHTML = `
 main {
   background-color: ${accessibleCombo[0]};
   color: ${accessibleCombo[1]};
 }
-  `;
-document.head.appendChild(newStyle);
+  `
+document.head.appendChild(newStyle)
 ```
 
 Cool that was it for this post hope you find this little snippet useful & make something cool woth it. You can see it live at [https://accessible-combos.now.sh](https://accessible-combos.now.sh) or check out the code at [https://github.com/kartiknair/accessible-combos](https://github.com/kartiknair/accessible-combos). Thanks for reading, if you wanna say hello hit me up on twitter, I'm [@kartikajitnair](https://twitter.com/kartikajitnair/). Stay safe ✌.

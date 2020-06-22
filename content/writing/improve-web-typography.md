@@ -19,31 +19,31 @@ The type scale is crucial so that a user knows what hierarchy you're trying to c
 ```css
 html,
 body {
-  font-size: 1rem;
+	font-size: 1rem;
 }
 
 h1 {
-  font-size: 2.25rem;
+	font-size: 2.25rem;
 }
 
 h2 {
-  font-size: 1.875rem;
+	font-size: 1.875rem;
 }
 
 h3 {
-  font-size: 1.5rem;
+	font-size: 1.5rem;
 }
 
 h4 {
-  font-size: 1.25rem;
+	font-size: 1.25rem;
 }
 
 h5 {
-  font-size: 1.125rem;
+	font-size: 1.125rem;
 }
 
 h6 {
-  font-size: 0.875rem;
+	font-size: 0.875rem;
 }
 ```
 
@@ -52,34 +52,34 @@ This will immediately make a difference to your websites by clarifying how the h
 ```css
 /* ↓ This one is for smaller phones ↓ */
 @media (max-width: 350px) {
-  html {
-    font-size: 0.9rem;
-  }
+	html {
+		font-size: 0.9rem;
+	}
 }
 
 /* ↓ These are for high-res displays ↓ */
 @media (min-width: 1900px) {
-  html {
-    font-size: 1.5rem;
-  }
+	html {
+		font-size: 1.5rem;
+	}
 }
 
 @media (min-width: 2500px) {
-  html {
-    font-size: 2rem;
-  }
+	html {
+		font-size: 2rem;
+	}
 }
 
 @media (min-width: 3000px) {
-  html {
-    font-size: 2.5rem;
-  }
+	html {
+		font-size: 2.5rem;
+	}
 }
 
 @media (min-width: 3400px) {
-  html {
-    font-size: 3rem;
-  }
+	html {
+		font-size: 3rem;
+	}
 }
 ```
 
@@ -98,26 +98,26 @@ Even though both of them use the same font and even the same type scale, the sec
 ```css
 html,
 body {
-  line-height: 1.5; // <- this will depend on your font
+	line-height: 1.5; // <- this will depend on your font
 }
 
 main {
-  width: 50%;
-  margin: 6% 25%;
+	width: 50%;
+	margin: 6% 25%;
 }
 
 @media (max-width: 768px) {
-  main {
-    width: 80%;
-    margin: 15% 10%;
-  }
+	main {
+		width: 80%;
+		margin: 15% 10%;
+	}
 }
 
 @media (max-width: 350px) {
-  main {
-    width: 90%;
-    margin: 15% 5%;
-  }
+	main {
+		width: 90%;
+		margin: 15% 5%;
+	}
 }
 ```
 

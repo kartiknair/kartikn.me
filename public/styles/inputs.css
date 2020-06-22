@@ -1,0 +1,38 @@
+input,
+textarea {
+	display: block;
+	font-size: 0.9rem;
+	width: 20rem;
+	margin: 0.25rem 0;
+	padding: 0.5rem 1rem;
+	border: 0.05rem solid var(--input-border);
+	border-radius: 0.2rem;
+	color: var(--text-color);
+	background: var(--bg);
+
+	transition: all 200ms ease;
+}
+
+textarea {
+	padding: 0.5rem 0.75rem;
+}
+
+input:hover,
+textarea:hover {
+	border: 0.05rem solid var(--input-border-hover);
+}
+
+input:focus,
+textarea:focus {
+	box-shadow: 0 0 0 0.1rem var(--focus-ring);
+}
+
+input::placeholder,
+textarea::placeholder {
+	color: var(--input-placeholder);
+	font-size: 0.9rem;
+}
+
+label {
+	font-weight: 500;
+}

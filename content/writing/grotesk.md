@@ -28,26 +28,26 @@ The way I decided to go about it was to allow the user to add an optional `theme
 
 Here is an example theme:
 
-```js
+```javascript
 const theme = {
-  bg: "#ffffff",
-  fgBody: "#2d3748",
-  fgHeadings: "#000000",
-  hrColor: "rgba(0, 0, 0, 0.07)",
-  linkColor: "#8a4baf",
-  preBg: "rgba(0, 0, 0, 0.04)",
-  preColor: "#2d3748",
-  inlineCodeBg: "rgba(0, 0, 0, 0.04)",
-  inlineCodeColor: "hsl(0, 79 %, 63 %)",
-  quoteBg: "#ffffff",
-  quoteBorder: "#8a4baf",
-  quoteColor: "#6a727c",
-  fontFamMain: "space-grotesk, sans-serif",
-  fontFamMono:
-    'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New" monospace',
-  lineHtMain: "1.5",
-  lineHtMono: "1"
-};
+	bg: '#ffffff',
+	fgBody: '#2d3748',
+	fgHeadings: '#000000',
+	hrColor: 'rgba(0, 0, 0, 0.07)',
+	linkColor: '#8a4baf',
+	preBg: 'rgba(0, 0, 0, 0.04)',
+	preColor: '#2d3748',
+	inlineCodeBg: 'rgba(0, 0, 0, 0.04)',
+	inlineCodeColor: 'hsl(0, 79 %, 63 %)',
+	quoteBg: '#ffffff',
+	quoteBorder: '#8a4baf',
+	quoteColor: '#6a727c',
+	fontFamMain: 'space-grotesk, sans-serif',
+	fontFamMono:
+		'Menlo, Monaco, Consolas, "Liberation Mono", "Courier New" monospace',
+	lineHtMain: '1.5',
+	lineHtMono: '1',
+}
 ```
 
 ### grotesk vs grotesk.css

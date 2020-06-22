@@ -11,20 +11,20 @@ I've recently embarked on quite the arduous journey of building my own CMS from 
 SWR is a data fetching strategy standing for Stale While Revalidate. This is a pretty popular data fetching strategy but Vercel published an npm package with React hooks that make it easy to use this strategy in web applications. The basic idea of the `useSWR` hook can be explained by looking at an example:
 
 ```javascript
-import useSWR from "swr";
+import useSWR from 'swr'
 
 const App = () => {
-  const { data, error } = useSWR("STRING_KEY", doSomethingWithKey);
+	const { data, error } = useSWR('STRING_KEY', doSomethingWithKey)
 
-  if (error) return <div>Error while loading data!</div>;
-  if (!data) return <div>Loading...</div>;
-  return <div>We have {data}!</div>;
-};
+	if (error) return <div>Error while loading data!</div>
+	if (!data) return <div>Loading...</div>
+	return <div>We have {data}!</div>
+}
 ```
 
 As you can see the hook takes 2 arguments the first one is a string key that's supposed to be a unique identifier for the data usually this will be the URL of your API. And the the second argument is a function that returns data based on this key (usually some sort of fetcher function).
 
-So now that we know the basics of SWR let's build an application with it. If you wanna skip ahead to a specific part check the Table of Contents below or if you wanna see the finished project then you can check it out live at [https://typemd.now.sh](https://typemd.now.sh "https://typemd.now.sh") or see the source code at [https://github.com/kartiknair/typemd](https://github.com/kartiknair/typemd "https://github.com/kartiknair/typemd").
+So now that we know the basics of SWR let's build an application with it. If you wanna skip ahead to a specific part check the Table of Contents below or if you wanna see the finished project then you can check it out live at [https://typemd.now.sh](https://typemd.now.sh 'https://typemd.now.sh') or see the source code at [https://github.com/kartiknair/typemd](https://github.com/kartiknair/typemd 'https://github.com/kartiknair/typemd').
 
 ![Preview of end result](typemd-result_ghunpe.png)
 
@@ -73,7 +73,7 @@ I also uninstalled the testing libraries and testing specific code as those are 
 
 ### Creating a Firebase App
 
-To be able to use Firebase in our web app we actually need to set up a Firebase project so let's do that. Head over to [https://firebase.google.com](https://firebase.google.com "https://firebase.google.com") and log in to your Google account. Then in the console create a new project:
+To be able to use Firebase in our web app we actually need to set up a Firebase project so let's do that. Head over to [https://firebase.google.com](https://firebase.google.com 'https://firebase.google.com') and log in to your Google account. Then in the console create a new project:
 
 ![Step 1 of configuring firebase](firebase-1_kcp95k.png)
 
@@ -109,14 +109,14 @@ Great now that we've done all our prep we can finally start working on the code.
 /* src/lib/firebaseConfig.js */
 
 export default {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  databaseURL: "YOUR_DATABASE_URL",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID",
-};
+	apiKey: 'YOUR_API_KEY',
+	authDomain: 'YOUR_AUTH_DOMAIN',
+	databaseURL: 'YOUR_DATABASE_URL',
+	projectId: 'YOUR_PROJECT_ID',
+	storageBucket: 'YOUR_STORAGE_BUCKET',
+	messagingSenderId: 'YOUR_SENDER_ID',
+	appId: 'YOUR_APP_ID',
+}
 ```
 
 You might be worried about having this hard coded in your code, but it isn't that much of an issue if somebody gets their hands on your configuration because we're gonna set up authentication rules on your database. If you're still worried you can add all these values to a '.env' file and import it in that way.
@@ -124,22 +124,22 @@ You might be worried about having this hard coded in your code, but it isn't tha
 Now that we have this configuration we're gonna make another file where we initialize our firebase app using this config and then we'll export it out so we can reuse it in our code:
 
 ```javascript
-import * as firebase from "firebase/app";
-import "firebase/auth";
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
 
-import firebaseConfig from "lib/firebaseConfig";
+import firebaseConfig from 'lib/firebaseConfig'
 
 // Check if we have already initialized an app
 const firebaseApp = !firebase.apps.length
-  ? firebase.initializeApp(firebaseConfig)
-  : firebase.app();
+	? firebase.initializeApp(firebaseConfig)
+	: firebase.app()
 
-export const firebaseAppAuth = firebaseApp.auth();
+export const firebaseAppAuth = firebaseApp.auth()
 
 export const providers = {
-  googleProvider: new firebase.auth.GoogleAuthProvider(),
-  githubProvider: new firebase.auth.GithubAuthProvider(), // <- This one is optional
-};
+	googleProvider: new firebase.auth.GoogleAuthProvider(),
+	githubProvider: new firebase.auth.GithubAuthProvider(), // <- This one is optional
+}
 ```
 
 Great! Now that our firebase app is set up let's go back to the mental image we created of our app, you remember that?
@@ -151,55 +151,55 @@ Well we're gonna implement that using reach-router and our firebase authenticati
 ```javascript
 /* src/components/App/App.js */
 
-import React from "react";
-import { Router, navigate } from "@reach/router";
+import React from 'react'
+import { Router, navigate } from '@reach/router'
 
-import withFirebaseAuth from "react-with-firebase-auth";
-import { firebaseAppAuth, providers } from "lib/firebase";
+import withFirebaseAuth from 'react-with-firebase-auth'
+import { firebaseAppAuth, providers } from 'lib/firebase'
 
-import { Dashboard, Editor, SignIn } from "components";
-import "./App.css";
+import { Dashboard, Editor, SignIn } from 'components'
+import './App.css'
 
 const createComponentWithAuth = withFirebaseAuth({
-  providers,
-  firebaseAppAuth,
-});
+	providers,
+	firebaseAppAuth,
+})
 
 const App = ({ signInWithGoogle, signInWithGithub, signOut, user }) => {
-  console.log(user);
-  return (
-    <>
-      <header>
-        <h2>TypeMD</h2>
-        {user && (
-          <div>
-            <a
-              href="#log-out"
-              onClick={() => {
-                signOut();
-                navigate("/");
-              }}
-            >
-              Log Out
-            </a>
-            <img alt="Profile" src={user.photoURL} />
-          </div>
-        )}
-      </header>
-      <Router>
-        <SignIn
-          path="/"
-          user={user}
-          signIns={{ signInWithGithub, signInWithGoogle }}
-        />
-        <Dashboard path="user/:userId" />
-        <Editor path="user/:userId/editor/:fileId" />
-      </Router>
-    </>
-  );
-};
+	console.log(user)
+	return (
+		<>
+			<header>
+				<h2>TypeMD</h2>
+				{user && (
+					<div>
+						<a
+							href="#log-out"
+							onClick={() => {
+								signOut()
+								navigate('/')
+							}}
+						>
+							Log Out
+						</a>
+						<img alt="Profile" src={user.photoURL} />
+					</div>
+				)}
+			</header>
+			<Router>
+				<SignIn
+					path="/"
+					user={user}
+					signIns={{ signInWithGithub, signInWithGoogle }}
+				/>
+				<Dashboard path="user/:userId" />
+				<Editor path="user/:userId/editor/:fileId" />
+			</Router>
+		</>
+	)
+}
 
-export default createComponentWithAuth(App);
+export default createComponentWithAuth(App)
 ```
 
 Yep I know it's a lot of code, but bear with me. So the basic idea is that we have a constant Header component and then below that we have our different routes. Since we wrap our App component with the firebase authentication HOC we get access to a few props like the sign in, sign out methods and also the currently logged in user (if there is one). We pass the sign in methods to our SignIn component and then we pass the sign out method to our header where we have our logout button. So as you can see the code is pretty intuitive in its qualities.
@@ -209,33 +209,38 @@ Now let's see how we handle the user logging in on our Sign In page:
 ```javascript
 /* src/components/SignIn/SignIn.js */
 
-import React from "react";
-import { navigate } from "@reach/router";
+import React from 'react'
+import { navigate } from '@reach/router'
 
 const SignIn = ({ user, signIns: { signInWithGoogle, signInWithGithub } }) => {
-  if (user) {
-    navigate(`/user/${user.uid}`);
-    return null;
-  } else {
-    return (
-      <div className="sign-in-page">
-        <h3>
-          Welcome to TypeMD a simple &amp; beautiful online markdown editor
-        </h3>
-        <p>
-          Sign in with your social accounts to have files that are synced
-          accross devices
-        </p>
-        <div className="sign-in-buttons">
-          <button onClick={signInWithGoogle}>Sign in with Google</button>
-          <button onClick={signInWithGithub}>Sign in with GitHub</button>
-        </div>
-      </div>
-    );
-  }
-};
+	if (user) {
+		navigate(`/user/${user.uid}`)
+		return null
+	} else {
+		return (
+			<div className="sign-in-page">
+				<h3>
+					Welcome to TypeMD a simple &amp; beautiful online markdown
+					editor
+				</h3>
+				<p>
+					Sign in with your social accounts to have files that are
+					synced accross devices
+				</p>
+				<div className="sign-in-buttons">
+					<button onClick={signInWithGoogle}>
+						Sign in with Google
+					</button>
+					<button onClick={signInWithGithub}>
+						Sign in with GitHub
+					</button>
+				</div>
+			</div>
+		)
+	}
+}
 
-export default SignIn;
+export default SignIn
 ```
 
 As you can see those methods we passed down to it are being used when the buttons are clicked and then we check if there is a logged in user we redirect them to the dashboard using the `navigate` method that reach-router provides.
@@ -277,8 +282,8 @@ This rule works because of the way we're going to structure our data. The way we
 Now if you remember our `firebase.js` file where we exported our firebase app and authentication providers, well in the same file add these two lines to make our database accessible by other files:
 
 ```javascript
-import "firebase/firestore";
-export const db = firebaseApp.firestore();
+import 'firebase/firestore'
+export const db = firebaseApp.firestore()
 ```
 
 ### Getting files from the database
@@ -286,31 +291,31 @@ export const db = firebaseApp.firestore();
 Now we can import that in our dashboard and create a function wherein we'll check if a user of the given id exists in the database, if so we return their data, and if not we create it let's call it `getUserData`:
 
 ```javascript
-import { db } from "lib/firebase";
+import { db } from 'lib/firebase'
 
 const getUserFiles = async (userId) => {
-  const doc = await db.collection("users").doc(userId).get();
+	const doc = await db.collection('users').doc(userId).get()
 
-  if (doc.exists) {
-    console.log("User found in database");
-    const snapshot = await db
-      .collection("users")
-      .doc(doc.id)
-      .collection("files")
-      .get();
+	if (doc.exists) {
+		console.log('User found in database')
+		const snapshot = await db
+			.collection('users')
+			.doc(doc.id)
+			.collection('files')
+			.get()
 
-    let userFiles = [];
-    snapshot.forEach((file) => {
-      let { name, content } = file.data();
-      userFiles.push({ id: file.id, name: name, content: content });
-    });
-    return userFiles;
-  } else {
-    console.log("User not found in database, creating new entry...");
-    db.collection("users").doc(userId).set({});
-    return [];
-  }
-};
+		let userFiles = []
+		snapshot.forEach((file) => {
+			let { name, content } = file.data()
+			userFiles.push({ id: file.id, name: name, content: content })
+		})
+		return userFiles
+	} else {
+		console.log('User not found in database, creating new entry...')
+		db.collection('users').doc(userId).set({})
+		return []
+	}
+}
 ```
 
 As you can see from the above code firebase has done an amazing job at having readable queries which I appreciate a lot especially when debugging.
@@ -319,12 +324,12 @@ This is pretty great but we don't really have any files to look at. So let's als
 
 ```javascript
 const createFile = async (userId, fileName) => {
-  let res = await db.collection("users").doc(userId).collection("files").add({
-    name: fileName,
-    content: "",
-  });
-  return res;
-};
+	let res = await db.collection('users').doc(userId).collection('files').add({
+		name: fileName,
+		content: '',
+	})
+	return res
+}
 ```
 
 Pretty simple right? In this function we're finding our user in the users collection and the in that user's files sub-collection we're adding a new file. Now we're using the `add` function instead of `set` as we were using before so that firebase can randomly generate the ID for our file. This allows users to have multiple files of the same name with no issues.
@@ -337,50 +342,53 @@ Now we can start with the UI for our Dashboard so let's just make a simple list 
 /* src/components/Dashboard/Dashboard.js */
 
 const Dashboard = ({ userId }) => {
-  const [nameValue, setNameValue] = useState("");
-  const { data, error } = useSWR(userId, getUserFiles);
+	const [nameValue, setNameValue] = useState('')
+	const { data, error } = useSWR(userId, getUserFiles)
 
-  if (error) return <p>Error loading data!</p>;
-  else if (!data) return <p>Loading...</p>;
-  else {
-    return (
-      <div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (nameValue) {
-              setNameValue("");
-              createFile(userId, nameValue);
-              mutate(userId);
-            }
-          }}
-          className="new-file-form"
-        >
-          <input
-            type="text"
-            placeholder="Your new files name..."
-            value={nameValue}
-            onChange={(e) => setNameValue(e.target.value)}
-          />
-          <button type="submit" className="add-button">
-            Create
-          </button>
-        </form>
-        <ul className="files-list">
-          {data.map((file) => {
-            return (
-              <li key={file.id} className="file">
-                <Link to={`/user/${userId}/editor/${file.id}`} className="link">
-                  {file.name}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    );
-  }
-};
+	if (error) return <p>Error loading data!</p>
+	else if (!data) return <p>Loading...</p>
+	else {
+		return (
+			<div>
+				<form
+					onSubmit={(e) => {
+						e.preventDefault()
+						if (nameValue) {
+							setNameValue('')
+							createFile(userId, nameValue)
+							mutate(userId)
+						}
+					}}
+					className="new-file-form"
+				>
+					<input
+						type="text"
+						placeholder="Your new files name..."
+						value={nameValue}
+						onChange={(e) => setNameValue(e.target.value)}
+					/>
+					<button type="submit" className="add-button">
+						Create
+					</button>
+				</form>
+				<ul className="files-list">
+					{data.map((file) => {
+						return (
+							<li key={file.id} className="file">
+								<Link
+									to={`/user/${userId}/editor/${file.id}`}
+									className="link"
+								>
+									{file.name}
+								</Link>
+							</li>
+						)
+					})}
+				</ul>
+			</div>
+		)
+	}
+}
 ```
 
 Again we have a lot of code but that's mostly just the UI. However this is the first time we're using the `useSWR` hook and we're passing it the user ID as a key and then for it's data fetching function we pass it the `getUserData` method we created before. Then we use the same pattern that I showed you in the first example to check for errors and loading and finally if we have the data we loop through and show it in a list. We're also using hooks to keep track of the create file input form but I'm hoping you're already familiar with how to use them.
@@ -394,73 +402,77 @@ As I mentioned earlier we're using an amazing open-source editor called `rich-ma
 ```javascript
 /* src/components/Editor/Editor.js */
 
-import React, { useState, useEffect } from "react";
-import useSWR, { mutate } from "swr";
-import { db } from "lib/firebase";
-import { Link, navigate } from "@reach/router";
-import MarkdownEditor from "rich-markdown-editor";
+import React, { useState, useEffect } from 'react'
+import useSWR, { mutate } from 'swr'
+import { db } from 'lib/firebase'
+import { Link, navigate } from '@reach/router'
+import MarkdownEditor from 'rich-markdown-editor'
 
 const getFile = async (userId, fileId) => {
-  const doc = await db
-    .collection("users")
-    .doc(userId)
-    .collection("files")
-    .doc(fileId)
-    .get();
+	const doc = await db
+		.collection('users')
+		.doc(userId)
+		.collection('files')
+		.doc(fileId)
+		.get()
 
-  return doc.data();
-};
+	return doc.data()
+}
 
 const Editor = ({ userId, fileId }) => {
-  const { data: file, error } = useSWR([userId, fileId], getFile);
-  const [value, setValue] = useState(null);
+	const { data: file, error } = useSWR([userId, fileId], getFile)
+	const [value, setValue] = useState(null)
 
-  useEffect(() => {
-    if (file !== undefined && value === null) {
-      console.log("Set initial content");
-      setValue(file.content);
-    }
-  }, [file, value]);
+	useEffect(() => {
+		if (file !== undefined && value === null) {
+			console.log('Set initial content')
+			setValue(file.content)
+		}
+	}, [file, value])
 
-  const saveChanges = () => {
-    db.collection("users").doc(userId).collection("files").doc(fileId).update({
-      content: value,
-    });
-    mutate([userId, fileId]);
-  };
+	const saveChanges = () => {
+		db.collection('users')
+			.doc(userId)
+			.collection('files')
+			.doc(fileId)
+			.update({
+				content: value,
+			})
+		mutate([userId, fileId])
+	}
 
-  if (error) return <p>We had an issue while getting the data</p>;
-  else if (!file) return <p>Loading...</p>;
-  else {
-    return (
-      <div>
-        <header className="editor-header">
-          <Link className="back-button" to={`/user/${userId}`}>
-            &lt;
-          </Link>
-          <h3>{file.name}</h3>
-          <button
-            disabled={file.content === value}
-            onClick={saveChanges}
-            className="save-button"
-          >
-            Save Changes
-          </button>
-        </header>
-        <div className="editor">
-          <MarkdownEditor
-            defaultValue={file.content}
-            onChange={(getValue) => {
-              setValue(getValue());
-            }}
-          />
-        </div>
-      </div>
-    );
-  }
-};
+	if (error) return <p>We had an issue while getting the data</p>
+	else if (!file) return <p>Loading...</p>
+	else {
+		return (
+			<div>
+				<header className="editor-header">
+					<Link className="back-button" to={`/user/${userId}`}>
+						&lt;
+					</Link>
+					<h3>{file.name}</h3>
+					<button
+						disabled={file.content === value}
+						onClick={saveChanges}
+						className="save-button"
+					>
+						Save Changes
+					</button>
+				</header>
+				<div className="editor">
+					<MarkdownEditor
+						defaultValue={file.content}
+						onChange={(getValue) => {
+							setValue(getValue())
+						}}
+					/>
+				</div>
+			</div>
+		)
+	}
+}
 
-export default Editor;
+export default Editor
 ```
 
 Just like before we're using the same pattern where we have a method that gets the data and then we have useSWR with our key. In this case we're using an array of keys so that we can pass down both the user ID and file's ID to the fetcher function (which is `getFile()` here). We're also using the `useState()` hooks to keep track of the editors state, usually we would update the value of the editor with our stateful value but we don't have to do that here. Once our data is available we just pass it as the defaultValue to our editor and then track changes using it's provided onChange method.
@@ -477,14 +489,14 @@ A pretty small but important thing to add to our Dashboard component. For this w
 
 ```javascript
 const deleteFile = async (userId, fileId) => {
-  let res = await db
-    .collection("users")
-    .doc(userId)
-    .collection("files")
-    .doc(fileId)
-    .delete();
-  return res;
-};
+	let res = await db
+		.collection('users')
+		.doc(userId)
+		.collection('files')
+		.doc(fileId)
+		.delete()
+	return res
+}
 ```
 
 Now we can actually call that when a button is pressed:
@@ -523,29 +535,29 @@ service firebase.storage {
 Like we did previously with firestore we need to create a reference to our storage bucket using our initialized firebase app so let's go back to firebase.js and do that:
 
 ```javascript
-import "firebase/storage";
-export const store = firebaseApp.storage();
+import 'firebase/storage'
+export const store = firebaseApp.storage()
 ```
 
 Great! Now we can import this reference in our code and use it to read or write to the store. So let's make a function that takes a File object and uploads it to the store:
 
 ```javascript
 const uploadImage = async (file) => {
-  const doc = await db
-    .collection("users")
-    .doc(userId)
-    .collection("images")
-    .add({
-      name: file.name,
-    });
+	const doc = await db
+		.collection('users')
+		.doc(userId)
+		.collection('images')
+		.add({
+			name: file.name,
+		})
 
-  const uploadTask = await store
-    .ref()
-    .child(`users/${userId}/${doc.id}-${file.name}`)
-    .put(file);
+	const uploadTask = await store
+		.ref()
+		.child(`users/${userId}/${doc.id}-${file.name}`)
+		.put(file)
 
-  return uploadTask.ref.getDownloadURL();
-};
+	return uploadTask.ref.getDownloadURL()
+}
 ```
 
 Ok so since firebase's storage offering doesn't have a way to upload files with a random unique name we're going to create a sub-collection for each user called images and then every time we upload an image we'll add it in there. After that completes we take that ID and add a hyphen and the original filename to it and then we upload it using the `ref.put` method that firebase storage provides. After the upload task completes we return it's URL using the `getDownloadURL` method.
@@ -572,31 +584,31 @@ So there are many things to improve but the first thing I wanted to handle was t
 
 ```javascript
 useEffect(() => {
-  if (!user) {
-    navigate("/");
-  }
-}, [user]);
+	if (!user) {
+		navigate('/')
+	}
+}, [user])
 ```
 
 Once that was out of the way I also wanted to give the user feedback when they had unsaved changes and tried to leave the page. This is accomplished using another `useEffect` hook so that we can add a listener to the `beforeunload` event:
 
 ```javascript
 const onUnload = (event) => {
-  event.preventDefault();
-  event.returnValue = "You have unsaved changes!";
-  return "You have unsaved changes!";
-};
+	event.preventDefault()
+	event.returnValue = 'You have unsaved changes!'
+	return 'You have unsaved changes!'
+}
 
 useEffect(() => {
-  if (file && !(file.content === value)) {
-    console.log("Added listener");
-    window.addEventListener("beforeunload", onUnload);
-  } else {
-    window.removeEventListener("beforeunload", onUnload);
-  }
+	if (file && !(file.content === value)) {
+		console.log('Added listener')
+		window.addEventListener('beforeunload', onUnload)
+	} else {
+		window.removeEventListener('beforeunload', onUnload)
+	}
 
-  return () => window.removeEventListener("beforeunload", onUnload);
-});
+	return () => window.removeEventListener('beforeunload', onUnload)
+})
 ```
 
 Pretty simple but in my opinion makes a significant difference. I also added a toasts using the amazing `react-toastify` packages to let the user when their changes have been saved or else when an error occurs:
@@ -630,4 +642,4 @@ And that's all for general tiny improvements, the toasts are perhaps a touch too
 
 ### Conclusion
 
-So I hope you were able to learn how amazing this stack for web applications is. Using SWR & Firebase with React makes for an amazing developer experience and also (because of the caching) gives the users a blazing fast user experience. You can see the final result at [https://typemd.now.sh](https://typemd.now.sh "https://typemd.now.sh") & feel free to check out/fork the code from [the GitHub repo](https://github.com/kartiknair/typemd). Thanks for reading till the end of this super long post, I've been using twitter a lot more recently so feel free to say hello over there: [@nairkartik\_](https://twitter.com/nairkartik_). Stay safe ✌.
+So I hope you were able to learn how amazing this stack for web applications is. Using SWR & Firebase with React makes for an amazing developer experience and also (because of the caching) gives the users a blazing fast user experience. You can see the final result at [https://typemd.now.sh](https://typemd.now.sh 'https://typemd.now.sh') & feel free to check out/fork the code from [the GitHub repo](https://github.com/kartiknair/typemd). Thanks for reading till the end of this super long post, I've been using twitter a lot more recently so feel free to say hello over there: [@nairkartik\_](https://twitter.com/nairkartik_). Stay safe ✌.
