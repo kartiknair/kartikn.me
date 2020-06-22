@@ -49,9 +49,6 @@ article {
 }
 
 @media (max-width: 350px) {
-	html {
-		font-size: 0.9rem;
-	}
 	article {
 		width: 90%;
 		margin: 15% 5%;
@@ -59,6 +56,9 @@ article {
 }
 
 @media (max-width: 768px) {
+	html {
+		font-size: 0.9rem;
+	}
 	article {
 		width: 80%;
 		margin: 15% 10%;
@@ -189,6 +189,13 @@ code * {
 	font: inherit;
 	font-size: 0.8rem;
 	margin: 0;
+}
+
+@media (max-width: 768px) {
+	pre code,
+	code * {
+		font-size: 0.75rem;
+	}
 }
 
 code {
