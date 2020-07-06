@@ -5,24 +5,24 @@
 @import './prism.css';
 
 @font-face {
-	font-family: basier;
-	src: url('../fonts/basiercircle-regular-webfont.woff2') format('woff2'),
-		url('../fonts/basiercircle-regular-webfont.woff') format('woff');
+	font-family: manrope;
+	src: url('../fonts/Manrope-Medium.woff2') format('woff2'),
+		url('../fonts/Manrope-Medium.woff') format('woff');
 	font-style: normal;
-	font-weight: normal;
+	font-weight: 500;
 }
 
 @font-face {
-	font-family: basier-mono;
-	src: url('../fonts/basiersquaremono-regular-webfont.woff2') format('woff2'),
-		url('../fonts/basiercircle-regular-webfont.woff') format('woff');
+	font-family: manrope;
+	src: url('../fonts/Manrope-SemiBold.woff2') format('woff2'),
+		url('../fonts/Manrope-SemiBold.woff') format('woff');
 	font-style: normal;
-	font-weight: normal;
+	font-weight: 600;
 }
 
 :root {
-	--font-text: normal normal 1rem/1.5 basier, sans-serif;
-	--font-headings: var(--font-text);
+	--font-text: normal 500 1rem/1.5em manrope, sans-serif;
+	--font-headings: normal 500 1rem/1.5em manrope, sans-serif;
 	--font-code: normal normal 0.8rem/1.5 monospace;
 
 	--bg: #ffffff;
