@@ -81,6 +81,12 @@ const Home = ({ projects }) => {
 							font-size: 1.4rem;
 						}
 					}
+
+					@media (max-width: 500px) {
+						h3 {
+							font-size: 1.25rem;
+						}
+					}
 				`}
 			</style>
 		</div>

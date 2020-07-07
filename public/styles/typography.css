@@ -13,8 +13,9 @@
 
 html {
 	font: var(--font-text);
-	font-size: 1rem;
+	font-size: 0.9rem;
 	text-rendering: optimizeLegibility;
+	font-feature-settings: 'liga' 0, 'calt' 1;
 }
 
 body {
@@ -24,7 +25,6 @@ body {
 	padding: 0;
 	background: var(--bg);
 	color: var(--text-color);
-	-webkit-font-smoothing: antialiased;
 }
 
 h1,
@@ -49,6 +49,9 @@ article {
 }
 
 @media (max-width: 350px) {
+	html {
+		font-size: 0.8rem;
+	}
 	article {
 		width: 90%;
 		margin: 15% 5%;
@@ -56,9 +59,6 @@ article {
 }
 
 @media (max-width: 768px) {
-	html {
-		font-size: 0.9rem;
-	}
 	article {
 		width: 80%;
 		margin: 15% 10%;
@@ -171,31 +171,23 @@ pre {
 	overflow: auto;
 	letter-spacing: 0.05em;
 	padding: 1.5rem 1.75rem;
-	tab-size: 2em;
+	font: var(--font-code);
 }
 
 pre code {
+	font: var(--font-code);
 	background: none;
 	color: var(--code-block-color);
 	padding: 0;
 }
 
-pre {
-	font: var(--font-code);
+pre code::before,
+pre code::after {
+	content: '';
 }
 
-pre code,
-code * {
+pre code * {
 	font: inherit;
-	font-size: 0.8rem;
-	margin: 0;
-}
-
-@media (max-width: 768px) {
-	pre code,
-	code * {
-		font-size: 0.75rem;
-	}
 }
 
 code {
@@ -204,7 +196,11 @@ code {
 	color: var(--code-span-color);
 	padding: 0.2rem;
 	border-radius: 0.2rem;
-	font-size: 0.9rem;
+}
+
+code::before,
+code::after {
+	content: '\`';
 }
 
 mark {
@@ -214,6 +210,19 @@ mark {
 a {
 	color: var(--primary);
 	text-decoration: none;
+}
+
+a[data-external]:after {
+	display: inline-block;
+	content: '';
+
+	width: 1em;
+	height: 1em;
+	margin-left: 0.25em;
+
+	background-color: var(--primary);
+	-webkit-mask-image: url('/styles/external-link.svg');
+	mask-image: url('/styles/external-link.svg');
 }
 
 a:hover {
