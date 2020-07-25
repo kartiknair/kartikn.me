@@ -2,6 +2,7 @@ import fs from 'fs'
 import marked from 'marked'
 import * as matter from 'gray-matter'
 import prism from 'prismjs'
+import PrismJsx from 'prismjs/components/prism-jsx.min'
 
 const renderer = new marked.Renderer()
 renderer.image = (href, title, text) => {
