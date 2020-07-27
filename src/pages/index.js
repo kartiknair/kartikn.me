@@ -14,13 +14,8 @@ const Home = ({ projects }) => {
 				url={process.env.NEXT_PUBLIC_HOME_URL}
 			/>
 			<h3>
-				Hey there, I'm Kartik Nair. I like creating and writing about
-				websites.
+				Hi! I’m Kartik Nair, a software engineer and designer. Currently specializing in frontend web development & typeface design.
 				<br />
-				<br />
-				Currently I'm finishing my computer systems degree at Middlesex
-				University while also building web experiences & writing about
-				them.
 			</h3>
 
 			<div className="projects">
